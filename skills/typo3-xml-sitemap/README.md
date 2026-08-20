@@ -32,7 +32,7 @@ Clear caches, fetch the index and each requested sitemap, parse returned XML, ve
 
 ## Related skills
 
-[`typo3-route-enhancers`](../typo3-route-enhancers/README.md) configures record detail routes; [`typo3-site-config-sets`](../typo3-site-config-sets/README.md) decides reusable configuration placement.
+[`typo3-route-enhancers`](../typo3-route-enhancers/README.md) configures record detail routes; [`typo3-site-sets`](../typo3-site-sets/README.md) decides reusable configuration placement.
 
 ## License
 

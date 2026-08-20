@@ -18,7 +18,7 @@ Provide the setting's purpose, number of affected sites, owning site package or 
 
 ## Installation
 
-Install the enclosing plugin as described in the [plugin README](../../README.md), or copy this directory to `.agents/skills/typo3-site-config-sets/`. Its `agents/openai.yaml` is optional Codex display metadata.
+Install the enclosing plugin as described in the [plugin README](../../README.md), or copy this directory to `.agents/skills/typo3-site-sets/`. Its `agents/openai.yaml` is optional Codex display metadata.
 
 ## Example prompts
 
@@ -28,7 +28,7 @@ Install the enclosing plugin as described in the [plugin README](../../README.md
 
 ## Validation
 
-Check that the selected layer matches the reuse boundary, validate YAML/TypoScript as appropriate, load the Site Set, and verify the site-settings editor does not discard required content. Maintainers can run `new-skill/scripts/validate-skill.sh skills/typo3-site-config-sets --strict-portable`.
+Check that the selected layer matches the reuse boundary, validate YAML/TypoScript as appropriate, load the Site Set, and verify the site-settings editor does not discard required content. Maintainers can run `new-skill/scripts/validate-skill.sh skills/typo3-site-sets --strict-portable`.
 
 ## Related skills
 

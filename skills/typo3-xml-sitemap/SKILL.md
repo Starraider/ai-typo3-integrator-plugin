@@ -31,7 +31,7 @@ Use this skill for TYPO3 v14 projects that use EXT:seo XML sitemaps. Keep exampl
 ## Related Skills
 
 - `typo3-route-enhancers`: use when record sitemap URLs fall back to query parameters or when a detail-page route is missing.
-- `typo3-site-config-sets`: use when deciding whether sitemap TypoScript/settings belong in a reusable Site Set or in a concrete site's `settings.yaml`.
+- `typo3-site-sets`: use when deciding whether sitemap TypoScript/settings belong in a reusable Site Set or in a concrete site's `settings.yaml`.
 
 ## Core Architecture
 

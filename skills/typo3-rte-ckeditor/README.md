@@ -32,7 +32,7 @@ Flush caches, confirm the preset is registered and assigned, test it with the in
 
 ## Related skills
 
-[`typo3-site-config-sets`](../typo3-site-config-sets/README.md) helps decide whether shared configuration belongs in a reusable set.
+[`typo3-site-sets`](../typo3-site-sets/README.md) helps decide whether shared configuration belongs in a reusable set.
 
 ## License
 

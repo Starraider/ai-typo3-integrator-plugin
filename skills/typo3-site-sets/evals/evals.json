@@ -1,4 +1,4 @@
-{"skill_name":"typo3-site-config-sets","evals":[
+{"skill_name":"typo3-site-sets","evals":[
   {"id":1,"kind":"representative","prompt":"Decide where an extension's reusable detailPid setting belongs in TYPO3 v14.","expected_output":"A reuse-based placement decision and implementation handoff.","files":[],"expectations":["Distinguishes Site Set definition from site override","Explains the selected file"]},
   {"id":2,"kind":"edge-case","prompt":"An editor save removes imports from a site settings file.","expected_output":"A safe placement correction.","files":[],"expectations":["Avoids editor-managed files for required reusable imports","Preserves version-controlled defaults"]},
   {"id":3,"kind":"near-miss","prompt":"Put a production base URL and root page into a reusable extension Site Set.","expected_output":"A site-instance boundary.","files":[],"expectations":["Keeps site identity in config/sites"]}

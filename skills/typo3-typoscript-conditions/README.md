@@ -32,7 +32,7 @@ Validate TypoScript through the project workflow, clear caches, and test matchin
 
 ## Related skills
 
-[`typo3-site-config-sets`](../typo3-site-config-sets/README.md) owns configuration placement.
+[`typo3-site-sets`](../typo3-site-sets/README.md) owns configuration placement.
 
 ## License
 

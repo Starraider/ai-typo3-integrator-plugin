@@ -22,7 +22,7 @@ Portable [Agent Plugin 1.0.0](https://agent-plugins.org/specification) providing
 | [typo3-rich-snippets](skills/typo3-rich-snippets/README.md) | schema.org structured data and JSON-LD integration |
 | [typo3-route-enhancers](skills/typo3-route-enhancers/README.md) | Speaking URLs and Extbase route enhancers |
 | [typo3-rte-ckeditor](skills/typo3-rte-ckeditor/README.md) | CKEditor 5/RTE configuration and presets |
-| [typo3-site-config-sets](skills/typo3-site-config-sets/README.md) | Site configuration versus reusable Site Sets |
+| [typo3-site-sets](skills/typo3-site-sets/README.md) | Site configuration versus reusable Site Sets |
 | [typo3-typoscript-conditions](skills/typo3-typoscript-conditions/README.md) | TYPO3 v14 frontend TypoScript conditions |
 | [typo3-xml-sitemap](skills/typo3-xml-sitemap/README.md) | EXT:seo XML sitemaps and route integration |
 

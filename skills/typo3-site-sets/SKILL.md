@@ -1,5 +1,5 @@
 ---
-name: typo3-site-config-sets
+name: typo3-site-sets
 description: "Decide where TYPO3 v14 site-handling configuration belongs: site-specific files in `config/sites/site-id/`, reusable Site Set files in `Configuration/Sets/SetName/` inside a site package or extension, and typed site setting definitions. Use this skill whenever configuring TYPO3 v14, configuring a TYPO3 extension or Extbase plugin, integrating configuration into an extension/plugin, moving TypoScript or Page TSconfig into the right place, or deciding whether configuration belongs in `config/sites` or `Configuration/Sets`."
 license: CC-BY-4.0
 compatibility: Requires a TYPO3 v14 project using Site Handling and, for reusable configuration, Site Sets in a site package or extension.

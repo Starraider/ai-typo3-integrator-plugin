@@ -32,7 +32,7 @@ Parse the site YAML, clear caches, test outbound generation and inbound resoluti
 
 ## Related skills
 
-[`typo3-xml-sitemap`](../typo3-xml-sitemap/README.md) depends on detail routes for canonical sitemap URLs; [`typo3-site-config-sets`](../typo3-site-config-sets/README.md) clarifies configuration placement.
+[`typo3-xml-sitemap`](../typo3-xml-sitemap/README.md) depends on detail routes for canonical sitemap URLs; [`typo3-site-sets`](../typo3-site-sets/README.md) clarifies configuration placement.
 
 ## License
 
