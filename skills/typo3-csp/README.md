@@ -1,29 +1,39 @@
 # TYPO3 Content Security Policy
 
-This Skill provides a safe rollout and maintenance workflow for TYPO3 v12–v14 Content Security Policies.
+## What this skill solves
 
-## Use it for
+Provides a staged, evidence-led TYPO3 CSP rollout: observe in report-only mode, allow only justified sources, then enforce after staging verification.
 
-- report-only CSP setup and staged enforcement
-- `csp.yaml` and extension-level source rules
-- interpreting TYPO3 CSP violation reports
-- blocked scripts, styles, images, embeds, or fonts
+## Use when
 
-## Included material
+Use for `csp.yaml`, extension CSP rules, CSP violation reports, blocked frontend resources, or a planned enforcement rollout in TYPO3 v12–v14. It is not a generic web-security audit or permission to deploy policy changes.
 
-The main [SKILL.md](SKILL.md) defines the workflow. Its references provide the detailed implementation procedure, YAML/source syntax, PHP extension API information, and troubleshooting:
+## Expected outputs
 
-- [implementation workflow](references/implementation-workflow.md)
-- [YAML syntax and sources](references/yaml-syntax-and-sources.md)
-- [PHP extension API](references/php-extension-api.md)
-- [troubleshooting](references/troubleshooting.md)
+A scoped policy change, rationale for every added source, the safe rollout state, and a verification plan covering affected frontend paths.
 
-## Working approach
+## Context requirements
 
-Audit first and enable report-only mode before whitelisting observed legitimate sources. Move to enforcement only after unexpected violations are resolved; validate the result in the TYPO3 backend and representative frontend pages.
+Provide TYPO3 version, site identifier, existing feature flags and `csp.yaml`, affected URLs/resources, and whether the change is report-only, staging, or production.
+
+## Installation
+
+Install the enclosing plugin as described in the [plugin README](../../README.md), or copy this directory to `.agents/skills/typo3-csp/` (or another supported client location). `agents/openai.yaml` supplies optional Codex UI metadata only.
+
+## Example prompts
+
+- “Put our TYPO3 site into CSP report-only mode and show the checks before enforcement.”
+- “Analyze these blocked Vimeo and Google Fonts violations and propose the smallest `csp.yaml` change.”
+- “Enable `unsafe-inline` globally so our legacy page works.”
+
+## Validation
+
+Validate YAML, inspect the TYPO3 CSP reporting module, and retest representative pages before enforcement. Maintainers can run `new-skill/scripts/validate-skill.sh skills/typo3-csp --strict-portable`.
+
+## Related skills
+
+None in this plugin; CSP policy decisions remain separate from favicon, routing, or Fluid-template work.
 
 ## License
 
-This Skill is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](../../LICENSE).
-
-Copyright (c) 2026 Sven Kalbhenn ([https://www.skom.de](https://www.skom.de)).
+Licensed under [CC BY 4.0](../../LICENSE).

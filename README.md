@@ -28,9 +28,22 @@ Portable [Agent Plugin 1.0.0](https://agent-plugins.org/specification) providing
 
 ## Compatibility note
 
-Some skills retain `agents/openai.yaml` display metadata from the source project. That metadata is not a portable Agent Plugins component and is not declared in `plugin.json`; it remains only for source-client compatibility. No client-specific extension is asserted or tested by this package.
+Each Skill retains `agents/openai.yaml` display metadata for Codex. That metadata is not a portable Agent Plugins component and is not declared in `plugin.json`; it remains only for source-client presentation. No client-specific extension is asserted or tested by this package.
 
 Compatible clients discover the portable Skills from `skills/<skill-name>/SKILL.md`. Installation, trust, UI metadata, and client-specific activation are managed by each client.
+
+## Validation
+
+The source tree includes a maintainer-only `evals/evals.json` suite for every Skill, with representative, edge-case, and near-miss prompts. These files are excluded from release archives. From the plugin root, validate the portable package and all Skills with:
+
+```bash
+for skill in skills/*; do
+  /path/to/new-skill/scripts/validate-skill.sh "$skill" --strict-portable
+done
+python3 /path/to/agent-plugin-builder/scripts/validate_agent_plugin.py . --strict
+```
+
+Run `skills-ref validate skills/<skill-name>` as an additional check where the reference validator is installed.
 
 ## License
 

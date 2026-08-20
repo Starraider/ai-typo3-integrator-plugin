@@ -1,6 +1,8 @@
 ---
 name: typo3-typoscript-conditions
 description: Add or fix frontend TypoScript conditions for TYPO3 v14. Use when you need conditional TypoScript for specific page IDs, rootlines, site identifiers, languages, requests, TYPO3 versions, or logged-in frontend/backend users and groups in `setup.typoscript`, imported TypoScript files, or site package TypoScript constants that use site settings.
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 v14 frontend TypoScript context and access to the site's TypoScript source and cache-clear workflow.
 ---
 
 # TYPO3 TypoScript Conditions
@@ -122,3 +124,7 @@ Official docs:
 
 - [TypoScript syntax conditions](https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Syntax/Conditions/Index.html#typoscript-syntax-conditions)
 - [Frontend TypoScript conditions criteria](https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Conditions/Index.html)
+
+## Completion And Boundaries
+
+Use the narrowest condition supported by the current TYPO3 version and avoid legacy APIs even when they appear in project code. Do not treat this skill as an authorization layer for sensitive frontend output. Complete only after TypoScript syntax is valid, caches are cleared, and both matching and non-matching contexts have been verified without null-access errors.

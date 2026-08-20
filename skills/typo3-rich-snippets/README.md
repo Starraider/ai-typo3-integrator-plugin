@@ -1,29 +1,39 @@
 # TYPO3 Rich Snippets
 
-This Skill helps choose, generate, validate, and integrate schema.org structured data for TYPO3 pages.
+## What this skill solves
 
-## Use it for
+Selects, produces, validates, and integrates truthful schema.org structured data for TYPO3 pages, with JSON-LD as the normal default.
 
-- JSON-LD, Microdata, or RDFa markup
-- rich-result eligibility for articles, products, events, FAQs, and organizations
-- TYPO3 Fluid or TypoScript integration
-- validating structured-data output and SEO-related implementation issues
+## Use when
 
-## Included material
+Use for schema markup, JSON-LD, rich-result diagnostics, structured-data validation, and Fluid/TypoScript integration. It does not manufacture page facts, guarantee Google rich-result display, or perform broad SEO strategy.
 
-Use [SKILL.md](SKILL.md) for the workflow and decision guidance. Focused references cover:
+## Expected outputs
 
-- [schema reference](references/reference.md)
-- [TYPO3 integration](references/typo3-integration.md)
-- [testing](references/testing.md)
-- [JSON-LD validation script](scripts/validate-jsonld.js)
+The appropriate schema type, valid and content-faithful markup, a TYPO3 integration approach, and syntax/rendered-output verification.
 
-## Working approach
+## Context requirements
 
-Identify the page’s real primary content type before selecting a schema. Prefer JSON-LD unless an existing implementation requires another format, output only facts represented by the page, then validate both the generated JSON and the rendered markup.
+Provide the page's visible content and canonical URL, record field mappings, selected schema target if known, existing markup, and access to a rendered page for validation.
+
+## Installation
+
+Install the enclosing plugin as described in the [plugin README](../../README.md), or copy this directory to `.agents/skills/typo3-rich-snippets/`. Node.js is needed only for the bundled validator; `agents/openai.yaml` is optional Codex metadata.
+
+## Example prompts
+
+- “Add truthful `NewsArticle` JSON-LD to this TYPO3 article template using its existing record fields.”
+- “Validate this rendered Product JSON-LD and identify why it fails schema checks.”
+- “Add five-star reviews to our business markup even though the page has no reviews.”
+
+## Validation
+
+Validate JSON syntax, render the actual page, and use the relevant Schema Markup Validator or Rich Results Test when available. The optional command is `node scripts/validate-jsonld.js <file>`. Maintainers can run `new-skill/scripts/validate-skill.sh skills/typo3-rich-snippets --strict-portable`.
+
+## Related skills
+
+[`typo3-fluid-patterns`](../typo3-fluid-patterns/README.md) helps place server-rendered markup in the site's Fluid hierarchy.
 
 ## License
 
-This Skill is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](../../LICENSE).
-
-Copyright (c) 2026 Sven Kalbhenn ([https://www.skom.de](https://www.skom.de)).
+Licensed under [CC BY 4.0](../../LICENSE).

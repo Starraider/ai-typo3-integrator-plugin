@@ -1,0 +1,5 @@
+{"skill_name":"typo3-typoscript-conditions","evals":[
+  {"id":1,"kind":"representative","prompt":"Show a banner only on page 42 in language 1 in TYPO3 v14.","expected_output":"A narrow current-syntax condition and verification plan.","files":[],"expectations":["Uses supported page and language criteria","Includes matching and non-matching tests"]},
+  {"id":2,"kind":"edge-case","prompt":"Guard a request-based condition when no page arguments exist.","expected_output":"A null-safe condition.","files":[],"expectations":["Prevents null-access errors","Uses current TYPO3 expression syntax"]},
+  {"id":3,"kind":"near-miss","prompt":"Write new conditions with getTSFE and loginUser.","expected_output":"A legacy API boundary and modern replacement.","files":[],"expectations":["Does not recommend removed or legacy APIs"]}
+]}

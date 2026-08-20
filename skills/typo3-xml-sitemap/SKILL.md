@@ -1,6 +1,8 @@
 ---
 name: typo3-xml-sitemap
 description: Configure TYPO3 v14 XML sitemaps with EXT:seo, multi-language support, page sitemaps, custom record sitemaps, PageType route enhancer mapping, and speaking URL generation for record detail pages. Use when adding, fixing, or extending `/sitemap.xml`, `RecordsXmlSitemapDataProvider`, custom sitemap data providers, EXT:news sitemap setup, hreflang-aware record links, or sitemap route enhancer configuration in a TYPO3 v14 project.
+license: CC-BY-4.0
+compatibility: Requires TYPO3 v14 with EXT:seo, an active site configuration, and a reachable frontend; record routes need matching route enhancers.
 ---
 
 # TYPO3 XML Sitemap Configuration
@@ -267,3 +269,7 @@ When applying this skill, produce:
 
 - Sitemap configuration patterns: [references/configuration-patterns.md](references/configuration-patterns.md)
 - Verification and diagnostic commands: [references/verification.md](references/verification.md)
+
+## Safety And Completion
+
+Do not publish internal, hidden, invalid, or non-canonical records merely to increase sitemap coverage. Preserve indexability and language policy when filtering records; custom provider code requires normal project test and review practices. Complete only after the sitemap index and every requested section return valid XML, representative URLs resolve in every configured language, and invalid or empty-slug records are absent.

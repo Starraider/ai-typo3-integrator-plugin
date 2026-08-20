@@ -1,0 +1,5 @@
+{"skill_name":"typo3-favicon-manifest","evals":[
+  {"id":1,"kind":"representative","prompt":"Wire our supplied favicon set and site.webmanifest into a TYPO3 v14 site package.","expected_output":"Head markup and delivery configuration using real files.","files":[],"expectations":["Does not hard-code generated asset hashes","Includes rendered-head and direct-URL checks"]},
+  {"id":2,"kind":"edge-case","prompt":"site.webmanifest returns 404 although the file exists in the package.","expected_output":"A route and public-path diagnosis.","files":[],"expectations":["Checks active site config before changing routes","Verifies manifest JSON and content delivery"]},
+  {"id":3,"kind":"near-miss","prompt":"Create a new logo and choose our brand colors.","expected_output":"A clear asset-creation boundary.","files":[],"expectations":["Does not invent brand assets"]}
+]}

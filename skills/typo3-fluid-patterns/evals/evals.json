@@ -1,0 +1,5 @@
+{"skill_name":"typo3-fluid-patterns","evals":[
+  {"id":1,"kind":"representative","prompt":"Refactor a Fluid layout so editors manage content columns through colPos.","expected_output":"A CMS-first hierarchy with data flow preserved.","files":[],"expectations":["Keeps content editor-managed","Uses Fluid/TYPO3 link and image mechanisms"]},
+  {"id":2,"kind":"edge-case","prompt":"Add a keyboard-accessible multi-level navigation partial.","expected_output":"A reusable partial with accessible state behavior.","files":[],"expectations":["Includes keyboard and responsive verification","Does not hard-code translatable text"]},
+  {"id":3,"kind":"near-miss","prompt":"Migrate this entire Bootstrap site to Tailwind.","expected_output":"A scope boundary and a focused Fluid alternative.","files":[],"expectations":["Does not treat a CSS migration as Fluid-pattern work"]}
+]}

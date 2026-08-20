@@ -1,6 +1,8 @@
 ---
 name: typo3-language-menu
 description: Build a TYPO3 v13+ language switcher menu that uses the `language-menu` DataProcessor, auto-redirects first-time visitors to their browser's preferred language, and persists the user's manual language choice in a cookie. Use this skill when adding or modifying a language selection menu in a TYPO3 site package — covers TypoScript configuration, Fluid template rendering, JavaScript browser-detection + cookie logic, and the hidden data-attribute bridge pattern between Fluid and JS.
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 v13+ site with configured site languages; browser-preference redirects require consent and privacy review appropriate to the project.
 ---
 
 # TYPO3 Language Menu
@@ -115,3 +117,7 @@ Structure uses BEM with `.lang-menu` block: `__trigger`, `__dropdown`, `__item`,
 - **JS asset**: `assets/language-preference.js`
 - [LanguageMenuProcessor reference](https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/DataProcessing/LanguageMenuProcessor.html)
 - [Frontend Localization Guide](https://docs.typo3.org/m/typo3/guide-frontendlocalization/main/en-us/LanguageMenu/Index.html)
+
+## Completion And Safety
+
+Keep the language menu usable without JavaScript and do not introduce automatic redirects without confirming the project's consent and locale policy. Complete only after the current language, unavailable translations, a first visit, a saved manual preference, and a no-JavaScript navigation path have all been tested without redirect loops.

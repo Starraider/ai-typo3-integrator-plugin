@@ -1,27 +1,39 @@
 # TYPO3 Menu Data Processors
 
-This Skill explains navigation menus in TYPO3 v13+ using `menu` and `language-menu` data processors with PAGEVIEW or FLUIDTEMPLATE.
+## What this skill solves
 
-## Use it for
+Builds TYPO3 v13+ page-tree navigation with `menu` and `language-menu` data processors and renders their state safely in Fluid.
 
-- main navigation, breadcrumbs, nested sections, and sitemaps
-- language switchers
-- special menu types and category-based page listings
-- Fluid rendering of processed menu arrays
+## Use when
 
-## Included material
+Use for main menus, breadcrumbs, directory/list/category menus, basic language selectors, and multi-level Fluid navigation. It does not own browser-language redirects or a non-TYPO3 application navigation model.
 
-Read [SKILL.md](SKILL.md) for the processor workflow and example configurations. More detailed material is in:
+## Expected outputs
 
-- [menu processor options](references/menu-processor-options.md)
-- [Fluid templates](references/fluid-templates.md)
+A scoped processor configuration, matching accessible Fluid rendering, stated hidden-page behavior, and verification of the requested menu states.
 
-## Working approach
+## Context requirements
 
-Start with the page-tree and site-language requirements, then select the narrowest processor configuration. Name the output variable clearly, render state and accessibility attributes in Fluid, and verify active, current, hidden, translated, and multi-level entries.
+Provide the target PAGEVIEW/FLUIDTEMPLATE, page-tree scope, required depth and special menu type, whether hidden pages belong in breadcrumbs, and site language requirements.
+
+## Installation
+
+Install the enclosing plugin as described in the [plugin README](../../README.md), or copy this directory to `.agents/skills/typo3-menu-dataprocessor/`. `agents/openai.yaml` is optional Codex presentation metadata.
+
+## Example prompts
+
+- “Create a two-level main menu in PAGEVIEW with active/current states in Fluid.”
+- “Fix a breadcrumb that omits a hidden structural page, but only if product agrees it should appear.”
+- “Add browser-language auto-detection and persist the selected locale.”
+
+## Validation
+
+Verify active/current state, empty and nested branches, hidden-page treatment, translated links, and keyboard behavior. Maintainers can run `new-skill/scripts/validate-skill.sh skills/typo3-menu-dataprocessor --strict-portable`.
+
+## Related skills
+
+[`typo3-language-menu`](../typo3-language-menu/README.md) owns browser-preference redirects and language-choice persistence; [`typo3-fluid-patterns`](../typo3-fluid-patterns/README.md) covers broader Fluid architecture.
 
 ## License
 
-This Skill is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](../../LICENSE).
-
-Copyright (c) 2026 Sven Kalbhenn ([https://www.skom.de](https://www.skom.de)).
+Licensed under [CC BY 4.0](../../LICENSE).

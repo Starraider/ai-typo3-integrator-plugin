@@ -1,24 +1,39 @@
 # TYPO3 TypoScript Conditions
 
-This Skill adds or repairs TYPO3 v14 frontend TypoScript conditions for page, rootline, site, language, request, version, and user context.
+## What this skill solves
 
-## Use it for
+Creates and repairs TYPO3 v14 frontend TypoScript conditions for page, language, site, request, version, and frontend/backend-user context.
 
-- conditional TypoScript in setup or imported files
-- page IDs, rootlines, site identifiers, and locales
-- frontend/backend user and group conditions
-- safe request, session, and site-setting checks
+## Use when
 
-## Included material
+Use for conditional TypoScript in setup/imports and site-setting-aware constants. It does not substitute for authorization checks or support legacy TYPO3 condition APIs in new work.
 
-Read [SKILL.md](SKILL.md) for the conditions workflow and syntax. [Criteria catalog](references/criteria-catalog.md) lists focused condition patterns.
+## Expected outputs
 
-## Working approach
+A narrow current-syntax condition, its correct file scope, null-safety precautions, and matching/non-matching verification steps.
 
-Identify the scope and choose the narrowest supported condition. Guard nullable values, use current TYPO3 expression syntax instead of legacy patterns, then clear caches and verify both matching and non-matching frontend contexts.
+## Context requirements
+
+Provide TYPO3 version, exact config file/scope, expected page/site/language/user/request context, and any existing condition to preserve or replace.
+
+## Installation
+
+Install the enclosing plugin as described in the [plugin README](../../README.md), or copy this directory to `.agents/skills/typo3-typoscript-conditions/`. `agents/openai.yaml` is optional Codex UI metadata.
+
+## Example prompts
+
+- “Show a banner only on page 42 in site language 1 with current TYPO3 v14 syntax.”
+- “Guard this condition against a missing page argument and test both outcomes.”
+- “Use `getTSFE()` and `loginUser()` to write our new v14 condition.”
+
+## Validation
+
+Validate TypoScript through the project workflow, clear caches, and test matching and non-matching frontend contexts. Maintainers can run `new-skill/scripts/validate-skill.sh skills/typo3-typoscript-conditions --strict-portable`.
+
+## Related skills
+
+[`typo3-site-config-sets`](../typo3-site-config-sets/README.md) owns configuration placement.
 
 ## License
 
-This Skill is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](../../LICENSE).
-
-Copyright (c) 2026 Sven Kalbhenn ([https://www.skom.de](https://www.skom.de)).
+Licensed under [CC BY 4.0](../../LICENSE).

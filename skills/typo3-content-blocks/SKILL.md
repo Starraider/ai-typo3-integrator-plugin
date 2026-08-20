@@ -1,6 +1,8 @@
 ---
 name: typo3-content-blocks
 description: Create, edit, and troubleshoot TYPO3 Content Blocks from the friendsoftypo3/content-blocks extension. Use this skill whenever the user asks for TYPO3 Content Blocks, content block `config.yaml`, `ContentBlocks/ContentElements`, `ContentBlocks/PageTypes`, `ContentBlocks/RecordTypes`, Content Block fields, templates, backend previews, icons, generated fields, the `make:content-block` command, `content-blocks:lint`, schema validation errors, missing CType/page/record types, broken labels, or Content Block rendering/debugging.
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 project with friendsoftypo3/content-blocks installed; the project CLI is used for generation and validation when available.
 ---
 
 # TYPO3 Content Blocks
@@ -113,3 +115,7 @@ Use Content Block ViewHelpers for local assets and labels:
 ## References
 
 Read [references/content-blocks-patterns.md](references/content-blocks-patterns.md) when you need concrete examples, docs links, validation details, or a troubleshooting checklist.
+
+## Safety And Completion
+
+Do not run generators or schema/database updates until the target site package and block type are known. Preserve existing generated fields and labels unless the request explicitly changes them. Complete the task only after YAML parses, `content-blocks:lint` passes through the project's normal command wrapper, and the block is visible and renders in the intended backend and frontend context.

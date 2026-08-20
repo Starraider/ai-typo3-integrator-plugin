@@ -1,27 +1,39 @@
 # TYPO3 XML Sitemap
 
-This Skill configures TYPO3 v14 XML sitemaps through EXT:seo, including page and record sitemaps, multi-language output, custom providers, and speaking URLs.
+## What this skill solves
 
-## Use it for
+Configures and troubleshoots TYPO3 v14 `EXT:seo` XML sitemaps for pages and records, including site routes, language output, canonical detail URLs, and custom providers.
 
-- `/sitemap.xml` and PageType route enhancer configuration
-- `RecordsXmlSitemapDataProvider` and custom XML sitemap providers
-- EXT:news and other record-based sitemap output
-- hreflang-aware record URLs and sitemap troubleshooting
+## Use when
 
-## Included material
+Use for `/sitemap.xml`, sitemap PageType routes, `RecordsXmlSitemapDataProvider`, custom providers, record URLs, and sitemap validation. It does not publish non-indexable/internal content or provide a general SEO crawl strategy.
 
-[SKILL.md](SKILL.md) contains the full workflow. Supporting guides are:
+## Expected outputs
 
-- [configuration patterns](references/configuration-patterns.md)
-- [verification](references/verification.md)
+The appropriate TypoScript/PHP/site-config changes, scope assumptions for records and languages, and end-to-end XML and URL verification.
 
-## Working approach
+## Context requirements
 
-Confirm EXT:seo, active site configuration, and speaking detail-page routing first. Configure the sitemap index and providers for the relevant languages, clear caches, then verify both generated XML and the linked detail URLs for every configured provider.
+Provide TYPO3/`EXT:seo` version, active site configuration, sitemap names, source table and storage PIDs, detail page/plugin route, language policy, and a reachable frontend URL.
+
+## Installation
+
+Install the enclosing plugin as described in the [plugin README](../../README.md), or copy this directory to `.agents/skills/typo3-xml-sitemap/`. `agents/openai.yaml` provides optional Codex presentation metadata.
+
+## Example prompts
+
+- “Add a record sitemap for `tx_catalog_domain_model_product` with canonical slug detail URLs.”
+- “Diagnose why `/sitemap.xml` works but every record URL contains query parameters.”
+- “Include hidden drafts and pages excluded from search in every sitemap.”
+
+## Validation
+
+Clear caches, fetch the index and each requested sitemap, parse returned XML, verify representative detail URLs in every site language, and exclude invalid records. Maintainers can run `new-skill/scripts/validate-skill.sh skills/typo3-xml-sitemap --strict-portable`.
+
+## Related skills
+
+[`typo3-route-enhancers`](../typo3-route-enhancers/README.md) configures record detail routes; [`typo3-site-config-sets`](../typo3-site-config-sets/README.md) decides reusable configuration placement.
 
 ## License
 
-This Skill is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](../../LICENSE).
-
-Copyright (c) 2026 Sven Kalbhenn ([https://www.skom.de](https://www.skom.de)).
+Licensed under [CC BY 4.0](../../LICENSE).

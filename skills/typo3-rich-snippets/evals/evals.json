@@ -1,0 +1,5 @@
+{"skill_name":"typo3-rich-snippets","evals":[
+  {"id":1,"kind":"representative","prompt":"Add truthful NewsArticle JSON-LD to a TYPO3 article template.","expected_output":"Schema selected from page content and safely integrated markup.","files":[],"expectations":["Uses JSON-LD by default","Maps only visible or record-backed facts"]},
+  {"id":2,"kind":"edge-case","prompt":"Validate Product JSON-LD whose image URL is relative and offer price is missing.","expected_output":"Specific validation failures and factual fixes.","files":[],"expectations":["Requires absolute URLs","Does not invent offer data"]},
+  {"id":3,"kind":"near-miss","prompt":"Add five-star reviews that our site has never collected.","expected_output":"A truthfulness boundary.","files":[],"expectations":["Refuses fabricated structured data"]}
+]}

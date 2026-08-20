@@ -1,0 +1,5 @@
+{"skill_name":"typo3-csp","evals":[
+  {"id":1,"kind":"representative","prompt":"Add CSP safely to a TYPO3 v14 site with Google Fonts and Vimeo.","expected_output":"A report-only rollout with a minimal reviewed policy.","files":[],"expectations":["Starts in report-only mode","Requires staging verification before enforcement"]},
+  {"id":2,"kind":"edge-case","prompt":"A deployed page reports an unknown script source in the CSP backend module.","expected_output":"A source-by-source triage decision.","files":[],"expectations":["Does not blindly whitelist the source","Retains inheritDefault unless a full replacement is intended"]},
+  {"id":3,"kind":"near-miss","prompt":"Disable CSP globally because one old inline script fails.","expected_output":"A safe refusal and a narrower remediation path.","files":[],"expectations":["Does not recommend unsafe global weakening"]}
+]}

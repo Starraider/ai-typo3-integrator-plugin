@@ -1,6 +1,8 @@
 ---
 name: typo3-menu-dataprocessor
 description: Create navigation menus in TYPO3 v13+ using the `menu` and `language-menu` data processors with PAGEVIEW/FLUIDTEMPLATE. Use this skill when building or modifying any kind of page navigation — main menus, breadcrumbs, language switchers, directory listings, sitemaps, or category-based menus — inside a TYPO3 site package. Covers TypoScript data processor configuration, all `special` menu types, available options, Fluid template rendering of menu items, and nested/multi-level menus.
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 v13+ site package using PAGEVIEW or FLUIDTEMPLATE and an available frontend page tree/site-language configuration.
 ---
 
 # TYPO3 Menu via Data Processors
@@ -398,3 +400,7 @@ Do not attempt to construct breadcrumbs or menus inside Extbase Controllers (e.g
 - [LanguageMenuProcessor Reference](https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/DataProcessing/LanguageMenuProcessor.html)
 - [Rootline / Breadcrumb](https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/DataProcessing/MenuProcessor/Rootline.html)
 - [Site Package Tutorial – Main Menu](https://docs.typo3.org/m/typo3/tutorial-sitepackage/main/en-us/Menu/Index.html)
+
+## Completion And Boundaries
+
+Do not use this skill to replace a bespoke application navigation model; use it for TYPO3 page-tree menus and processors. Confirm whether hidden pages belong in breadcrumbs before changing `includeNotInMenu`. Complete only after active/current states, empty and multi-level branches, hidden-page behavior, translated links, and keyboard navigation have been verified for the requested menu.

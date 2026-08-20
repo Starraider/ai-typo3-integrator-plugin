@@ -1,6 +1,8 @@
 ---
 name: typo3-favicon-manifest
 description: Integrate and configure favicon, app icon, and web manifest support in TYPO3 v14 projects, including Fluid `f:page.headerData`, TypoScript head tags, `page.shortcutIcon`, site-level route enhancer mapping for `/site.webmanifest` and `/browserconfig.xml`, and practical verification steps. Use when creating or fixing favicon/app icon setup, wiring web manifest delivery, or migrating icon configuration in a TYPO3 v14 project.
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 v14 site package and its active site configuration; icon assets must be available before implementation.
 ---
 
 # TYPO3 Favicon + Web Manifest Workflow
@@ -158,3 +160,7 @@ Use these external sources when needed:
 
 - [TYPO3 app icon integration article (t3forum)](https://t3forum.net/d/405-einbindung-von-app-icons-in-typo3)
 - [RealFaviconGenerator](https://realfavicongenerator.net/)
+
+## Completion And Safety
+
+Do not invent brand assets, overwrite existing manifest routes, or expose files at root URLs without confirming the package's delivery model. Complete only when the rendered head references real public assets, the manifest parses as JSON, configured routes return the expected content type, and cache clearing has been followed by browser verification.

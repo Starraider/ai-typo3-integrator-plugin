@@ -1,6 +1,8 @@
 ---
 name: typo3-route-enhancers
 description: Configure TYPO3 routeEnhancers for speaking URLs in site configuration, especially Extbase plugins with controller/action arguments, detail pages, filters, pagination, aliases, and cHash-sensitive parameters. Use when creating or fixing site config routing, mapping plugin GET parameters to route paths, or troubleshooting why TYPO3 falls back to query-string URLs.
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 site configuration and the actual plugin namespace, controller/action, and route arguments; cache flushing is needed after routing changes.
 ---
 
 # TYPO3 Route Enhancers
@@ -379,3 +381,7 @@ When applying this skill, produce:
 
 - Configuration patterns and aspect mappers: [references/configuration-patterns.md](references/configuration-patterns.md)
 - Ready-made patterns and verification checklist: [references/ready-made-patterns.md](references/ready-made-patterns.md)
+
+## Safety And Completion
+
+Do not change global routing scope, invent a parameter mapping, or remove cHash handling without evidence from generated links. Treat free-text search as a boundary unless a tested custom mapper is explicitly in scope. Complete only after configuration parses, caches are cleared, outbound generation and inbound resolving work for each requested route, and invalid values fail without affecting unrelated pages.

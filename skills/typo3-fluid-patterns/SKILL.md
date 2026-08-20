@@ -1,6 +1,8 @@
 ---
 name: typo3-fluid-patterns
 description: Battle-tested TYPO3 Fluid template patterns for site package development. Use this skill when building or maintaining a TYPO3 v12+ site package — regardless of CSS framework. Covers the full template hierarchy (Layouts → Pages → Partials → Atoms), CMS-first content architecture with lib.dynamicContent, colPos propagation for sidebar-aware styling, responsive image handling, WCAG 2.1 AA accessibility patterns, and progressive-enhancement JavaScript. Complements the typo3-playwright-ddev and typo3-tailwind-migration skills.
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 v12+ site package using Fluid; validate rendered frontend output in the project's supported browser and accessibility workflow.
 ---
 
 # TYPO3 Fluid Template Patterns
@@ -317,3 +319,7 @@ Embed videos using the `Atoms/Video` partial (`Partials/Atoms/Video.fluid.html`)
 | Hardcoded text in templates | Not translatable, breaks i18n | `<f:translate>` with XLIFF language files |
 | Inline SVG markup in templates | Bloated templates, hard to maintain | SVG files in `Resources/Public/Icons/` via `<f:image>` |
 | Raw `<a>` / `<img>` HTML tags | Bypasses TYPO3 link handling and FAL processing | `<f:link.typolink>` and `<f:image>` ViewHelpers |
+
+## Completion And Boundaries
+
+Inspect local conventions before introducing a new template layer, component API, or JavaScript convention. Do not treat this skill as a CSS-framework migration, test-harness, or content-modeling authority. Complete changes only after the relevant Fluid template renders without exceptions, editor-managed content remains editable, and keyboard, responsive-image, and translated-text paths have been checked as applicable.

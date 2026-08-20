@@ -1,0 +1,5 @@
+{"skill_name":"typo3-route-enhancers","evals":[
+  {"id":1,"kind":"representative","prompt":"Create a slug-based Extbase product detail route on its dedicated page.","expected_output":"A scoped Extbase enhancer with correct argument/aspect mapping.","files":[],"expectations":["Includes limitToPages","Uses the actual plugin argument structure"]},
+  {"id":2,"kind":"edge-case","prompt":"Pagination still falls back to a query parameter after a route enhancer change.","expected_output":"A diagnosis of widget argument mapping and two-way verification.","files":[],"expectations":["Checks generated parameters before editing","Tests invalid page values"]},
+  {"id":3,"kind":"near-miss","prompt":"Use a built-in mapper for arbitrary free-text search paths.","expected_output":"A clear boundary and query-string/custom-mapper alternative.","files":[],"expectations":["Does not claim native mappers support arbitrary search text"]}
+]}

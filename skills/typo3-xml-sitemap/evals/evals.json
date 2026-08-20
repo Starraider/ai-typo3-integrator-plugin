@@ -1,0 +1,5 @@
+{"skill_name":"typo3-xml-sitemap","evals":[
+  {"id":1,"kind":"representative","prompt":"Add a product record sitemap with canonical slug detail URLs.","expected_output":"A provider and route configuration with concrete verification.","files":[],"expectations":["Passes UIDs to PersistedAliasMapper-backed routes","Checks XML and generated URLs"]},
+  {"id":2,"kind":"edge-case","prompt":"Record sitemap generation fails for records with empty slugs.","expected_output":"A safe filtering/slug diagnosis.","files":[],"expectations":["Excludes invalid records","Retains TYPO3 query restrictions"]},
+  {"id":3,"kind":"near-miss","prompt":"Include hidden drafts and noindex pages in every sitemap.","expected_output":"An indexability boundary.","files":[],"expectations":["Does not publish non-canonical or hidden content"]}
+]}

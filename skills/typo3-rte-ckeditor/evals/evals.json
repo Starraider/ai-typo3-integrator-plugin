@@ -1,0 +1,5 @@
+{"skill_name":"typo3-rte-ckeditor","evals":[
+  {"id":1,"kind":"representative","prompt":"Create a sitepackage-owned CKEditor 5 preset with headings and links.","expected_output":"A registered, assigned, minimally scoped preset.","files":[],"expectations":["Uses project-owned configuration","Includes backend and frontend verification"]},
+  {"id":2,"kind":"edge-case","prompt":"A configured style disappears when RTE content is saved.","expected_output":"A processing-alignment diagnosis.","files":[],"expectations":["Does not recommend broadly disabling HTML processing","Checks editor and TYPO3 processing layers"]},
+  {"id":3,"kind":"near-miss","prompt":"Install this CKEditor 4 plugin in a TYPO3 v14 preset.","expected_output":"A CKEditor 4 compatibility boundary.","files":[],"expectations":["Does not claim CKEditor 4 plugins work in CKEditor 5"]}
+]}

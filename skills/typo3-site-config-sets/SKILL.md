@@ -1,6 +1,8 @@
 ---
 name: typo3-site-config-sets
 description: "Decide where TYPO3 v14 site-handling configuration belongs: site-specific files in `config/sites/site-id/`, reusable Site Set files in `Configuration/Sets/SetName/` inside a site package or extension, and typed site setting definitions. Use this skill whenever configuring TYPO3 v14, configuring a TYPO3 extension or Extbase plugin, integrating configuration into an extension/plugin, moving TypoScript or Page TSconfig into the right place, or deciding whether configuration belongs in `config/sites` or `Configuration/Sets`."
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 v14 project using Site Handling and, for reusable configuration, Site Sets in a site package or extension.
 ---
 
 # TYPO3 Site Config & Sets
@@ -199,3 +201,7 @@ Keep this skill focused on where configuration belongs. Let other TYPO3 skills h
 ## References
 
 For official TYPO3 v14 source material and distilled placement rules, read [references/site-handling-placement.md](references/site-handling-placement.md).
+
+## Completion And Boundaries
+
+This skill decides ownership and placement; hand off feature-specific implementation to the related skill once the target layer is selected. Do not move a site instance's base URL, root page, or language configuration into a reusable set. Complete only after the selected file matches the reuse boundary, set dependencies are explicit where needed, and a site-settings editor save cannot silently discard required configuration.

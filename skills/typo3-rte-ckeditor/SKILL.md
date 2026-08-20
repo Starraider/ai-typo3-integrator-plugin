@@ -1,6 +1,8 @@
 ---
 name: typo3-rte-ckeditor
 description: Configure TYPO3 Rich Text Editor setups with EXT:rte_ckeditor / CKEditor 5. Use this skill when asked to install or enable the TYPO3 RTE, create or modify RTE YAML presets, register presets in `ext_localconf.php` or `system/additional.php`, assign presets with Page TSconfig or TCA `richtextConfiguration`, customize toolbars, styles, headings, link browser options, content CSS, HTML processing, or install and activate CKEditor plugins or TYPO3 extensions that add RTE functionality.
+license: CC-BY-4.0
+compatibility: Requires TYPO3 with EXT:rte_ckeditor / CKEditor 5 and access to the owning site package or extension; Composer may be required for added extensions.
 ---
 
 # TYPO3 RTE CKEditor
@@ -110,3 +112,7 @@ Do not reuse CKEditor 4 plugins directly; TYPO3's RTE uses CKEditor 5 in modern 
 ## References
 
 Read [references/rte-ckeditor-patterns.md](references/rte-ckeditor-patterns.md) when you need concrete YAML, Page TSconfig, TCA, link browser, or plugin examples.
+
+## Safety And Completion
+
+Preserve content filtering and existing presets unless the requested feature requires a reviewed change; never solve stripped markup by broadly disabling processing. Installation, dependency, and production activation changes require the user's authorization. Complete only after the preset is discoverable, assigned to its target field, usable by the intended backend role, and its saved HTML has been checked in the frontend.

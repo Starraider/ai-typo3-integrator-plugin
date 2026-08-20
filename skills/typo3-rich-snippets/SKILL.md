@@ -1,6 +1,8 @@
 ---
 name: typo3-rich-snippets
 description: Generate, validate, and implement structured data (Rich Snippets) for TYPO3 web pages to improve SEO. Identifies appropriate schema.org types, produces JSON-LD/Microdata/RDFa markup, provides TYPO3 Fluid and TypoScript integration, and validates against Google Rich Results expectations. Use when the user mentions rich snippets, structured data, schema markup, JSON-LD, schema.org, or SEO structured data in a TYPO3 context.
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 site with access to rendered content; Node.js is optional for scripts/validate-jsonld.js.
 ---
 
 # Rich Snippets
@@ -115,3 +117,7 @@ For automated validation, see [references/testing.md](references/testing.md) and
 - TYPO3 Fluid & TypoScript integration: [references/typo3-integration.md](references/typo3-integration.md)
 - Testing strategies and automated validation: [references/testing.md](references/testing.md)
 - Validation script: `scripts/validate-jsonld.js`
+
+## Safety And Completion
+
+Emit only facts visible to users or supported by the source record. Do not promise rich-result eligibility, fabricate ratings/offers/authors, or deploy search-engine-facing markup without user approval. Complete only after the JSON-LD is valid, rendered output contains exactly the intended entities, and the applicable structured-data validator has been run or its unavailable access has been stated.

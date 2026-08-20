@@ -1,0 +1,5 @@
+{"skill_name":"typo3-language-menu","evals":[
+  {"id":1,"kind":"representative","prompt":"Add an accessible German/English language menu with a remembered manual choice.","expected_output":"Processor, Fluid, and optional client behavior with graceful fallback.","files":[],"expectations":["Uses language-menu data","Keeps the menu usable without JavaScript"]},
+  {"id":2,"kind":"edge-case","prompt":"Browser redirect loops when the requested translation is unavailable.","expected_output":"A loop-safe availability-aware correction.","files":[],"expectations":["Tests unavailable translations","Uses a session or equivalent loop guard"]},
+  {"id":3,"kind":"near-miss","prompt":"Force every user into the browser locale without consent or manual override.","expected_output":"A privacy and preference boundary.","files":[],"expectations":["Preserves manual choice and consent policy"]}
+]}

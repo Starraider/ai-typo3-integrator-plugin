@@ -1,0 +1,5 @@
+{"skill_name":"typo3-menu-dataprocessor","evals":[
+  {"id":1,"kind":"representative","prompt":"Create a two-level TYPO3 main menu in PAGEVIEW and render active/current states.","expected_output":"Scoped MenuProcessor and accessible Fluid output.","files":[],"expectations":["Uses a unique processor key","Renders current and active state"]},
+  {"id":2,"kind":"edge-case","prompt":"A breadcrumb omits a page marked Hide in menu.","expected_output":"A request to decide hidden-page policy and a targeted configuration change.","files":[],"expectations":["Does not assume includeNotInMenu is correct","Tests the resulting rootline"]},
+  {"id":3,"kind":"near-miss","prompt":"Add browser-language detection and selection cookies.","expected_output":"A handoff to the preference-aware language-menu skill.","files":[],"expectations":["Does not duplicate redirect behavior"]}
+]}

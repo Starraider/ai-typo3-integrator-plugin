@@ -1,24 +1,39 @@
 # TYPO3 Site Config and Sets
 
-This Skill determines where TYPO3 v14 configuration belongs: a concrete site configuration or a reusable Site Set in a site package or extension.
+## What this skill solves
 
-## Use it for
+Decides whether a TYPO3 v14 setting belongs to one concrete site's `config/sites/` files, a reusable Site Set, or a typed setting definition.
 
-- deciding between `config/sites/<site-id>/` and `Configuration/Sets/<set-name>/`
-- reusable TypoScript, Page TSconfig, and typed site settings
-- extension and Extbase-plugin configuration placement
-- moving configuration to its correct ownership boundary
+## Use when
 
-## Included material
+Use before placing site-handling configuration, reusable TypoScript, Page TSconfig, or package-level settings. It decides ownership and does not replace implementation skills for routing, Extbase, FlexForms, or templates.
 
-[SKILL.md](SKILL.md) contains the placement rules. [Site-handling placement](references/site-handling-placement.md) provides supporting examples and edge cases.
+## Expected outputs
 
-## Working approach
+A clear target file, why it matches the reuse boundary, dependency/override implications, and handoff to the implementation concern where needed.
 
-Classify whether the value identifies one mounted site or is reusable package behavior. Keep per-site values with the site, share defaults through Site Sets, and express dependencies through Site Set metadata rather than cross-extension TypoScript imports.
+## Context requirements
+
+Provide the setting's purpose, number of affected sites, owning site package or extension, existing Site Sets/dependencies, and whether editors must change the value per site.
+
+## Installation
+
+Install the enclosing plugin as described in the [plugin README](../../README.md), or copy this directory to `.agents/skills/typo3-site-config-sets/`. Its `agents/openai.yaml` is optional Codex display metadata.
+
+## Example prompts
+
+- “Should our extension's `detailPid` be a Site Set setting or live in `config/sites/acme/settings.yaml`?”
+- “Move reusable page TSconfig and defaults out of one concrete site's configuration.”
+- “Put this site's production base URL and root page ID into the reusable extension set.”
+
+## Validation
+
+Check that the selected layer matches the reuse boundary, validate YAML/TypoScript as appropriate, load the Site Set, and verify the site-settings editor does not discard required content. Maintainers can run `new-skill/scripts/validate-skill.sh skills/typo3-site-config-sets --strict-portable`.
+
+## Related skills
+
+[`typo3-route-enhancers`](../typo3-route-enhancers/README.md), [`typo3-typoscript-conditions`](../typo3-typoscript-conditions/README.md), and [`typo3-xml-sitemap`](../typo3-xml-sitemap/README.md) implement configuration after placement is decided.
 
 ## License
 
-This Skill is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](../../LICENSE).
-
-Copyright (c) 2026 Sven Kalbhenn ([https://www.skom.de](https://www.skom.de)).
+Licensed under [CC BY 4.0](../../LICENSE).

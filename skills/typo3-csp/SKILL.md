@@ -1,6 +1,8 @@
 ---
 name: typo3-csp
 description: Implement, configure, and analyze Content Security Policies (CSP) in TYPO3 v12-v14. Provides step-by-step instructions to enable CSP in report-only mode, monitor violations in the TYPO3 backend module, iteratively whitelist required sources, and transition to full enforcement — all without breaking site functionality. Use when the user wants to add or harden CSP on a TYPO3 site, interpret CSP violation reports, configure site-specific csp.yaml files, add extension-level CSP rules, troubleshoot blocked scripts/styles/images/iframes, or understand which TYPO3 feature flags control enforcement vs. report-only mode.
+license: CC-BY-4.0
+compatibility: Requires a TYPO3 v12-v14 installation with access to its site configuration and CSP reporting UI; production enforcement needs staging verification.
 ---
 
 # TYPO3 Content Security Policy (CSP)
@@ -97,3 +99,7 @@ Only after zero unexpected violations remain in report-only mode:
 - **Avoid `*` wildcards** in script or frame sources. Prefer explicit domain allowlists.
 - **Always test in a staging environment** before applying enforcement to production.
 - **Never remove `inheritDefault: true`** unless you are deliberately writing a full replacement policy.
+
+## Completion And Maintenance
+
+Do not enable enforcement, weaken directives, or approve third-party sources without the user's explicit deployment decision. A rollout is complete only when the changed policy is valid YAML, representative pages have been checked in report-only mode, each remaining source is documented as intentional, and an enforcement change has been verified in staging.
