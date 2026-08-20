@@ -1,0 +1,15 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ai-typo3-general-skills-plugin",
+  "version": "1.0.0",
+  "description": "Reusable Agent Skills for TYPO3 site-package development and configuration.",
+  "author": {
+    "name": "Sven Kalbhenn",
+    "email": "sven@skom.de",
+    "url": "https://www.skom.de"
+  },
+  "homepage": "https://github.com/Starraider/ai-typo3-general-skills-plugin",
+  "repository": "https://github.com/Starraider/ai-typo3-general-skills-plugin",
+  "license": "CC-BY-4.0",
+  "keywords": ["typo3", "agent-skills", "sitepackage", "fluid", "typoscript"]
+}
