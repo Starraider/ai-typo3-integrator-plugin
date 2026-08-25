@@ -28,7 +28,7 @@ It guides an implementation from dependency and site-set setup through plugin se
 
 ## Installation
 
-This directory is an Agent Skill supplied by the `typo3-extension-skills` plugin. It uses the portable Agent Skills core and is automatically discoverable by compatible Agent Plugin clients from `skills/typo3-news-extension/`.
+This directory is an Agent Skill supplied by the `typo3-extension-skills` plugin. It uses the portable Agent Skills core and is automatically discoverable by compatible Agent Plugin clients from `skills/typo3-ext-news/`.
 
 ## Example prompts
 

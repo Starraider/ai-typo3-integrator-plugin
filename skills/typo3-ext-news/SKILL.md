@@ -1,5 +1,5 @@
 ---
-name: typo3-news-extension
+name: typo3-ext-news
 description: Install, configure, review, or customize the TYPO3 News Extension (georgringer/news). Use for News site-set or TypoScript setup, choosing native News plugins, site-package template and partial overrides, detail-page SEO ViewHelpers, FAL media rendering, search routing, or frontend verification; do not use it for unrelated custom Extbase domains.
 license: CC-BY-4.0
 compatibility: Requires a TYPO3 project with georgringer/news; Composer, DDEV, CSS-build, and browser-test commands must follow the target repository.

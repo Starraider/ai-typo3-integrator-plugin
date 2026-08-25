@@ -20,7 +20,7 @@ Configure route enhancers in TYPO3 site config so frontend plugin URLs resolve t
 ## Related Skills
 
 - **`typo3-xml-sitemap`** — Sitemap providers rely on route enhancers to generate speaking URLs. If the detail page route enhancer is missing or misconfigured, sitemap URLs will contain raw query parameters. Use this skill when setting up `RecordsXmlSitemapDataProvider` or custom sitemap providers that need to produce speaking URLs.
-- **`typo3-news-extension`** — EXT:news has a specific route enhancer pattern (slug field is `path_segment`, not `slug`). This skill covers the project's News TypoScript constants and plugin registration that the route enhancer must align with.
+- **`typo3-ext-news`** — EXT:news has a specific route enhancer pattern (slug field is `path_segment`, not `slug`). This skill covers the project's News TypoScript constants and plugin registration that the route enhancer must align with.
 - **`typo3-site-sets`** — Route enhancers live in `config/sites/<site>/config.yaml`. This skill clarifies the boundary between site-specific config and reusable Site Set config.
 
 ## Decide The Configuration Shape

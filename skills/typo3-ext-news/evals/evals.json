@@ -1,5 +1,5 @@
 {
-  "skill_name": "typo3-news-extension",
+  "skill_name": "typo3-ext-news",
   "evals": [
     {
       "id": "detail-template-override",

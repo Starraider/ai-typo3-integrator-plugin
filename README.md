@@ -17,13 +17,13 @@ Portable [Agent Plugin 1.0.0](https://agent-plugins.org/specification) with reus
 | [typo3-csp](skills/typo3-csp/README.md) | Content Security Policy rollout and hardening |
 | [typo3-deployer-deployment](skills/typo3-deployer-deployment/README.md) | Deployer 8 recipes, upgrades, and GitHub Actions deployments |
 | [typo3-ext-container](skills/typo3-ext-container/README.md) | `b13/container` CTypes, nested content, and grid rendering |
+| [typo3-ext-news](skills/typo3-ext-news/README.md) | EXT:news configuration, templates, and site-package integration |
 | [typo3-favicon-manifest](skills/typo3-favicon-manifest/README.md) | Favicons, app icons, and web manifests |
 | [typo3-fluid-patterns](skills/typo3-fluid-patterns/README.md) | Fluid templates, content architecture, accessibility, and JS patterns |
 | [typo3-form-yaml](skills/typo3-form-yaml/README.md) | Versioned EXT:form YAML, editor setup, and form styling |
 | [typo3-frontend-registration](skills/typo3-frontend-registration/README.md) | Approval-gated frontend registration with CAPTCHA and felogin |
 | [typo3-language-menu](skills/typo3-language-menu/README.md) | Language switcher with browser detection and preference persistence |
 | [typo3-menu-dataprocessor](skills/typo3-menu-dataprocessor/README.md) | Navigation menus and language menus via data processors |
-| [typo3-news-extension](skills/typo3-news-extension/README.md) | EXT:news configuration, templates, and site-package integration |
 | [typo3-playwright-ddev](skills/typo3-playwright-ddev/README.md) | Playwright and accessibility test setup in DDEV |
 | [typo3-playwright-workflow](skills/typo3-playwright-workflow/README.md) | Focused Playwright and visual-regression verification |
 | [typo3-rich-snippets](skills/typo3-rich-snippets/README.md) | schema.org structured data and JSON-LD integration |
