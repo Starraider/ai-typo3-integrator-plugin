@@ -1,10 +1,10 @@
-# TYPO3 General Skills
+# TYPO3 Integrator Plugin
 
 Portable [Agent Plugin 1.0.0](https://agent-plugins.org/specification) providing reusable skills for TYPO3 site-package development, configuration, frontend rendering, SEO, and editor integration.
 
 ## Package contract
 
-- **Plugin:** `ai-typo3-general-skills-plugin` (`plugin.json`, schema 1.0.0)
+- **Plugin:** `ai-typo3-integrator-plugin` (`plugin.json`, schema 1.0.0)
 - **Portable components:** 12 immediate-child [Agent Skills](https://agentskills.io/specification) in `skills/`
 - **MCP servers:** none
 - **License:** CC-BY-4.0; see [LICENSE](LICENSE)
