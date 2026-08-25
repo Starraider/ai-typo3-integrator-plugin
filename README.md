@@ -1,6 +1,6 @@
 # TYPO3 Integrator Plugin
 
-Portable [Agent Plugin 1.0.0](https://agent-plugins.org/specification) with reusable skills for TYPO3 site-package development, configuration, frontend rendering, testing, deployment, SEO, and editor integration.
+This collection of portable, reusable Skills complies with the [Agent Plugin 1.0.0 standard](https://agent-plugins.org/specification). It is for TYPO3 integrators who set up TYPO3 projects and configure them within site packages, including those responsible for project setup, configuration, and ongoing maintenance.
 
 ## Package contract
 
