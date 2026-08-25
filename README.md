@@ -9,6 +9,13 @@ This collection of portable, reusable Skills complies with the [Agent Plugin 1.0
 - **MCP servers:** none
 - **License:** CC-BY-4.0; see [LICENSE](LICENSE)
 
+## Installation
+
+- [Install the complete Agent Plugin](plugin-installation.md) in Codex, Cursor,
+  GitHub Copilot, or Visual Studio Code.
+- [Install individual Agent Skills](skill-installation.md) in Antigravity,
+  OpenCode, Windsurf, Zed, Trae, or Qoder.
+
 ## Skills
 
 | Skill | Focus |
