@@ -1,0 +1,47 @@
+{
+  "skill_name": "typo3-frontend-registration",
+  "evals": [
+    {
+      "id": "approval-gated-membership",
+      "kind": "representative",
+      "prompt": "Set up a TYPO3 14 member area where a visitor confirms their email, an administrator approves them, and only approved users can log in to the protected page.",
+      "expected_output": "A technical state-machine plan for sf_register, bw_captcha, felogin, email notifications, groups, and end-to-end test accounts.",
+      "files": [
+        "composer.json",
+        "packages/site_package/Configuration/Sets/",
+        "packages/site_package/Resources/Private/"
+      ],
+      "expectations": [
+        "Keeps every pre-approval account disabled and outside the final protected group.",
+        "Requires server-side CAPTCHA validation and preserves scanner-safe confirmation handling.",
+        "Uses test mailboxes/accounts for the complete state-matrix verification."
+      ]
+    },
+    {
+      "id": "existing-identity-provider",
+      "kind": "edge-case",
+      "prompt": "Our TYPO3 member pages already authenticate through an external SSO provider. Add sf_register beside it for a new signup page.",
+      "expected_output": "A clarification or refusal to introduce a second login system until the identity architecture and migration authority are decided.",
+      "files": [
+        "config/sites/site/config.yaml",
+        "composer.json"
+      ],
+      "expectations": [
+        "Does not install or configure a competing frontend login mechanism by default.",
+        "Explains the account/access-model conflict and asks for architectural direction.",
+        "Avoids modifying production users, groups, or mail routing without authorization."
+      ]
+    },
+    {
+      "id": "policy-near-miss",
+      "kind": "near-miss",
+      "prompt": "Decide which applicants are eligible for membership and write our privacy policy.",
+      "expected_output": "The response identifies eligibility and privacy policy as outside the skill's technical integration boundary.",
+      "files": [],
+      "expectations": [
+        "Does not present policy or legal decisions as technical sf_register configuration.",
+        "Offers to implement the approved policy as technical rules after the owner supplies it."
+      ]
+    }
+  ]
+}

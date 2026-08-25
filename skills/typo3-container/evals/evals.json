@@ -1,0 +1,46 @@
+{
+  "skill_name": "typo3-container",
+  "evals": [
+    {
+      "id": "two-column-container",
+      "kind": "representative",
+      "prompt": "Add a two-column b13/container CType to our TYPO3 site package. Editors need a background choice and the frontend uses Tailwind.",
+      "expected_output": "A site-package implementation plan or change set that registers the CType, provides matching TCA/schema/rendering, and verifies Tailwind output.",
+      "files": [
+        "composer.json",
+        "packages/site_package/Configuration/TCA/Overrides/tt_content.php",
+        "packages/site_package/Resources/Private/Templates/Container/"
+      ],
+      "expectations": [
+        "Checks the installed b13/container version and existing site-package conventions before choosing APIs.",
+        "Keeps registration, TCA fields, database columns, TypoScript, and Fluid column processing consistent.",
+        "Includes an authorized schema/cache/asset verification path and does not edit vendor files."
+      ]
+    },
+    {
+      "id": "unknown-framework",
+      "kind": "edge-case",
+      "prompt": "Create a full-width container with responsive ordering, but this repository has no package.json or obvious CSS framework.",
+      "expected_output": "A request for the missing CSS-framework decision before emitting framework-specific classes.",
+      "files": [
+        "packages/site_package/"
+      ],
+      "expectations": [
+        "Does not invent Bootstrap, Tailwind, or a new BEM layer.",
+        "Explains which implementation decision depends on the framework.",
+        "Still identifies the non-CSS evidence it can inspect safely."
+      ]
+    },
+    {
+      "id": "backend-layout-near-miss",
+      "kind": "near-miss",
+      "prompt": "Add a TYPO3 backend layout with two normal-page columns; we are not using b13/container.",
+      "expected_output": "The response identifies the request as a TYPO3 backend-layout task outside this skill's container-CType boundary.",
+      "files": [],
+      "expectations": [
+        "Does not route a normal backend-layout request into b13/container registration.",
+        "States the boundary succinctly and asks to use an appropriate TYPO3 layout workflow."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "skill_name": "typo3-deployer-deployment",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "representative",
+      "prompt": "Set up Deployer 8 and a manual GitHub Action for this Composer-based TYPO3 project. Deployments use the production host alias, public/ is the web root, and .env plus public/fileadmin must survive releases. Configure and validate only. Do not deploy.",
+      "expected_output": "A Deployer 8 recipe and GitHub Actions deployment setup that preserve TYPO3 state and stop before any remote deployment.",
+      "files": [
+        "composer.json",
+        "composer.lock"
+      ],
+      "expectations": [
+        "composer.json constrains deployer/deployer to ^8.0 and composer.lock resolves major version 8",
+        "deploy.php requires recipe/typo3.php and uses typo3/public_dir rather than typo3_webroot",
+        "The workflow uses a protected production environment, read-only contents permission, concurrency, pinned action SHAs, environment secrets, and vendor/bin/dep",
+        "The SSH script requires a verified known_hosts secret and does not disable host checking",
+        "No deployment command or workflow dispatch is executed"
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "edge-case",
+      "prompt": "Upgrade our Deployer 7 recipe to v8. The local CLI is PHP 8.2 and the recipe has run('sync', ['timeout' => 5, 'no_throw' => true]) plus a secret: argument. Keep going even if Composer complains.",
+      "expected_output": "The agent detects the v7 API patterns but blocks the dependency update on the unsupported PHP runtime instead of forcing Composer.",
+      "files": [
+        "composer.json",
+        "deploy.php"
+      ],
+      "expectations": [
+        "The response states that Deployer 8 requires PHP 8.3 or later",
+        "Composer files remain unchanged while PHP 8.2 is active",
+        "The migration plan maps the run options to named arguments and secret to secrets",
+        "The response does not remove unrelated Composer packages to bypass the conflict"
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "near-miss",
+      "prompt": "Upgrade this TYPO3 12 project to TYPO3 13. It does not use Deployer and we are keeping the current deployment platform.",
+      "expected_output": "The skill stays out of scope and routes the work to a TYPO3 core upgrade workflow without adding Deployer.",
+      "files": [
+        "composer.json"
+      ],
+      "expectations": [
+        "No Deployer dependency, recipe, SSH script, or GitHub deployment workflow is created",
+        "The response identifies TYPO3 core upgrade work as the relevant capability"
+      ]
+    },
+    {
+      "id": 4,
+      "kind": "regression",
+      "prompt": "This repository locks deployer/deployer v7.4.1 and its TYPO3 recipe sets typo3_webroot, web_path, public_path, empty shared_dirs, and empty writable_dirs. Upgrade in place to Deployer 8, preserve the host aliases and deploy_path, and do not contact the server.",
+      "expected_output": "A local v8 dependency and recipe migration that preserves server identity and reports the risky empty TYPO3 overrides for review.",
+      "files": [
+        "composer.json",
+        "composer.lock",
+        "deploy.php"
+      ],
+      "expectations": [
+        "The detector classifies the initial project as v7",
+        "The final lock resolves Deployer 8 and the recipe no longer uses typo3_webroot",
+        "Host aliases, hostname, remote_user, deploy_path, branch, shared_files, and keep_releases are preserved",
+        "Empty shared_dirs and writable_dirs are compared with v8 TYPO3 defaults rather than silently preserved or replaced",
+        "No SSH connection or Deployer deploy task runs"
+      ]
+    }
+  ]
+}

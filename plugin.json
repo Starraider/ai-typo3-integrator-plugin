@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ai-typo3-integrator-plugin",
   "version": "1.0.0",
-  "description": "Reusable Agent Skills for TYPO3 site-package development and configuration.",
+  "description": "Reusable Agent Skills for TYPO3 site-package development, configuration, frontend integration, testing, deployment, and SEO.",
   "author": {
     "name": "Sven Kalbhenn",
     "email": "sven@skom.de",
@@ -11,5 +11,13 @@
   "homepage": "https://github.com/Starraider/ai-typo3-integrator-plugin",
   "repository": "https://github.com/Starraider/ai-typo3-integrator-plugin",
   "license": "CC-BY-4.0",
-  "keywords": ["typo3", "agent-skills", "sitepackage", "fluid", "typoscript"]
+  "keywords": [
+    "typo3",
+    "agent-skills",
+    "sitepackage",
+    "fluid",
+    "typoscript",
+    "playwright",
+    "deployer"
+  ]
 }

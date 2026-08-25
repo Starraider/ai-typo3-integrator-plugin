@@ -1,6 +1,6 @@
 ---
 name: typo3-fluid-patterns
-description: Battle-tested TYPO3 Fluid template patterns for site package development. Use this skill when building or maintaining a TYPO3 v12+ site package — regardless of CSS framework. Covers the full template hierarchy (Layouts → Pages → Partials → Atoms), CMS-first content architecture with lib.dynamicContent, colPos propagation for sidebar-aware styling, responsive image handling, WCAG 2.1 AA accessibility patterns, and progressive-enhancement JavaScript. Complements the typo3-playwright-ddev and typo3-tailwind-migration skills.
+description: Build or maintain TYPO3 v12+ Fluid site packages, regardless of CSS framework. Use for template hierarchy, CMS-first content architecture with lib.dynamicContent, colPos propagation, responsive images, WCAG 2.1 AA patterns, and progressive-enhancement JavaScript. Pair with typo3-playwright-ddev when browser verification needs setup.
 license: CC-BY-4.0
 compatibility: Requires a TYPO3 v12+ site package using Fluid; validate rendered frontend output in the project's supported browser and accessibility workflow.
 ---
@@ -9,7 +9,7 @@ compatibility: Requires a TYPO3 v12+ site package using Fluid; validate rendered
 
 Reusable patterns for building TYPO3 v14+ site packages with Fluid templates. This skill is **CSS-framework-agnostic** — the patterns apply whether you use Tailwind, Bootstrap, vanilla CSS, or any other approach.
 
-> **Companion skills:** Use `typo3-playwright-ddev` for test setup and `typo3-tailwind-migration` for CSS migration workflows.
+> **Companion skill:** Use `typo3-playwright-ddev` to set up browser testing.
 
 ## Site Package Directory Structure
 

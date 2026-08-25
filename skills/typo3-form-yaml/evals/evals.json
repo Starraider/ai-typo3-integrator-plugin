@@ -1,0 +1,49 @@
+{
+  "skill_name": "typo3-form-yaml",
+  "evals": [
+    {
+      "id": "versioned-contact-form",
+      "kind": "representative",
+      "prompt": "Create a versioned contact form for our TYPO3 14.2 site package and let editors update its YAML definition.",
+      "expected_output": "A form-set and extension-path YAML implementation that keeps framework configuration and the form definition in the owning site package.",
+      "files": [
+        "composer.json",
+        "packages/site_package/Configuration/Form/",
+        "packages/site_package/Resources/Private/Forms/"
+      ],
+      "expectations": [
+        "Confirms the exact TYPO3 minor version before selecting auto-discovery.",
+        "Uses Configuration/Form for framework setup and Resources/Private/Forms for the versioned definition.",
+        "Includes browser and validation checks after authorized asset/cache changes."
+      ]
+    },
+    {
+      "id": "legacy-minor-version",
+      "kind": "edge-case",
+      "prompt": "Our TYPO3 14.1 project needs its first versioned EXT:form YAML file and a custom frontend partial.",
+      "expected_output": "The response selects the documented legacy frontend/backend YAML registration rather than claiming v14.2 form-set auto-discovery.",
+      "files": [
+        "composer.lock",
+        "packages/site_package/Configuration/"
+      ],
+      "expectations": [
+        "Uses installed-version evidence to choose the registration path.",
+        "Keeps the template override scope limited to the required markup change.",
+        "Does not silently migrate forms to database storage."
+      ]
+    },
+    {
+      "id": "extbase-near-miss",
+      "kind": "near-miss",
+      "prompt": "Add validation to my Extbase controller action and render its Fluid form.",
+      "expected_output": "The response identifies an Extbase form as outside the EXT:form YAML capability boundary.",
+      "files": [
+        "Classes/Controller/RegistrationController.php"
+      ],
+      "expectations": [
+        "Does not propose EXT:form YAML or form-editor configuration for an Extbase form.",
+        "States the boundary and directs the work to the project's Extbase implementation."
+      ]
+    }
+  ]
+}

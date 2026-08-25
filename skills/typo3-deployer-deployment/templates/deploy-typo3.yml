@@ -1,0 +1,77 @@
+name: Deploy TYPO3 production
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-typo3-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment:
+      name: production
+      url: ${{ vars.DEPLOY_URL }}
+
+    steps:
+      - name: Check out the selected revision
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Set up PHP and Composer
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: none
+
+      - name: Validate Composer metadata
+        run: composer validate --strict --no-check-publish
+
+      - name: Install deployment dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      # Add the project's test and production asset build commands here.
+      # The recipe should use local_archive in CI so these exact files deploy.
+
+      - name: Require Deployer 8
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(vendor/bin/dep --version)"
+          if [[ ! "$version" =~ ^Deployer[[:space:]]+8\. ]]; then
+            printf 'Expected Deployer 8, got: %s\n' "$version" >&2
+            exit 1
+          fi
+
+      - name: Configure and verify deployment SSH
+        shell: bash
+        env:
+          DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ vars.DEPLOY_USER }}
+          DEPLOY_PORT: ${{ vars.DEPLOY_PORT }}
+        run: .github/scripts/configure-deployer-ssh.sh --verify
+
+      - name: Load the deployment task tree
+        shell: bash
+        env:
+          DEPLOYER_SELECTOR: ${{ vars.DEPLOYER_SELECTOR }}
+        run: |
+          set -euo pipefail
+          test -n "$DEPLOYER_SELECTOR"
+          vendor/bin/dep tree deploy
+
+      - name: Deploy the checked-out revision
+        shell: bash
+        env:
+          DEPLOYER_SELECTOR: ${{ vars.DEPLOYER_SELECTOR }}
+        run: vendor/bin/dep deploy "$DEPLOYER_SELECTOR" --no-interaction -vvv

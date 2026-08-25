@@ -1,0 +1,41 @@
+{
+  "skill_name": "typo3-playwright-ddev",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "representative",
+      "prompt": "Set up Playwright for a TYPO3 site package in DDEV that has package.json but no test configuration or browser runtime.",
+      "expected_output": "A read-first setup plan that identifies the package path and requests permission before installing dependencies, adding the DDEV add-on, or writing files.",
+      "files": [],
+      "expectations": [
+        "The response distinguishes read-only discovery from dependency, configuration, and test-file writes.",
+        "The response keeps browser installation and Playwright execution inside DDEV.",
+        "The proposed completion check includes a successfully executed focused test and inspectable artifacts."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "edge-case",
+      "prompt": "Playwright tests worked yesterday, but now DDEV reports that Chromium is missing. Repair the setup without replacing our existing config or snapshots.",
+      "expected_output": "An evidence-led diagnosis that inspects the current configuration and container runtime, then requests permission for only the required repair.",
+      "files": [],
+      "expectations": [
+        "The response does not reinstall or overwrite working test files before identifying the defect.",
+        "The response treats existing snapshots as protected and does not propose updating them to solve a runtime error.",
+        "The response names an in-DDEV command path for verification."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "near-miss",
+      "prompt": "The Playwright setup already passes. Run a visual check for the changed Fluid template on the homepage.",
+      "expected_output": "A handoff to the routine TYPO3 Playwright workflow rather than unnecessary infrastructure changes.",
+      "files": [],
+      "expectations": [
+        "The response identifies that setup is already functional.",
+        "The response directs the task to typo3-playwright-workflow.",
+        "The response does not propose dependency or DDEV configuration changes."
+      ]
+    }
+  ]
+}

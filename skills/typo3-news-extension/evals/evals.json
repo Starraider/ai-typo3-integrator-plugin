@@ -1,0 +1,49 @@
+{
+  "skill_name": "typo3-news-extension",
+  "evals": [
+    {
+      "id": "detail-template-override",
+      "kind": "representative",
+      "prompt": "Redesign the EXT:news detail page in our site package and add a related-news sidebar without breaking SEO or FAL image processing.",
+      "expected_output": "A site-package template/partial change that preserves required News detail ViewHelpers and uses native related-content and image APIs.",
+      "files": [
+        "composer.lock",
+        "packages/site_package/Resources/Private/Templates/News/Detail.html",
+        "packages/site_package/Resources/Private/Partials/News/"
+      ],
+      "expectations": [
+        "Checks the installed News version and the vendor template before choosing ViewHelpers or variables.",
+        "Preserves the installed detail page's title/meta and exclusion behavior.",
+        "Uses FAL image ViewHelpers and verifies the actual detail URL after asset/cache steps."
+      ]
+    },
+    {
+      "id": "unknown-search-url",
+      "kind": "edge-case",
+      "prompt": "Restyle the News search form and add a browser test, but I have not provided the search result page URL.",
+      "expected_output": "A search template plan that requests or discovers the configured target page rather than hardcoding a guessed URL.",
+      "files": [
+        "packages/site_package/Configuration/",
+        "packages/site_package/Resources/Private/Templates/News/SearchForm.html"
+      ],
+      "expectations": [
+        "Keeps the native News request parameter and routing contract intact.",
+        "Does not guess a plugin page URL for browser tests.",
+        "Uses project-specific CSS/build commands instead of assuming DDEV or Tailwind."
+      ]
+    },
+    {
+      "id": "custom-domain-near-miss",
+      "kind": "near-miss",
+      "prompt": "Design a new Event Extbase domain model and repository unrelated to georgringer/news.",
+      "expected_output": "The response identifies the request as a custom domain feature outside the News Extension skill.",
+      "files": [
+        "Classes/Domain/Model/Event.php"
+      ],
+      "expectations": [
+        "Does not suggest repurposing the News extension for an unrelated domain model.",
+        "States the boundary and leaves custom Extbase architecture to an appropriate workflow."
+      ]
+    }
+  ]
+}

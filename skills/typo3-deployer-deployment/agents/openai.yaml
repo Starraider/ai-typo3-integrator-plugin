@@ -1,0 +1,6 @@
+interface:
+  display_name: "TYPO3 Deployer 8"
+  short_description: "Set up or upgrade TYPO3 deployments with Deployer 8"
+  default_prompt: "Configure or upgrade this TYPO3 project's Deployer setup to version 8 and validate it without deploying unless I explicitly ask."
+policy:
+  allow_implicit_invocation: true

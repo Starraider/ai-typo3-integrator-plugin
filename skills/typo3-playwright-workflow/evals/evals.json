@@ -1,0 +1,41 @@
+{
+  "skill_name": "typo3-playwright-workflow",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "representative",
+      "prompt": "Verify the modified quick-menu component in our TYPO3 DDEV project with its existing Playwright visual test.",
+      "expected_output": "A focused build, cache, and test plan that selects the real page URL, runs Playwright in DDEV, and reports the test result.",
+      "files": [],
+      "expectations": [
+        "The response asks for or discovers the site-package directory, mounted URL, and relevant spec.",
+        "The response uses a focused in-DDEV Playwright command rather than a host-side browser assumption.",
+        "The response preserves existing snapshot baselines."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "edge-case",
+      "prompt": "Our plugin VRT fails, and I cannot open the ddev.site URL from the agent host. Find the cause and make the test pass.",
+      "expected_output": "Artifact-first diagnosis that distinguishes host reachability from the in-DDEV test result and avoids a blind snapshot update.",
+      "files": [],
+      "expectations": [
+        "The response inspects screenshots, report, trace, or in-container response evidence in a defined order.",
+        "The response checks the real mounted URL and TYPO3 host context before inferring a UI defect.",
+        "The response does not use --update-snapshots as a generic failure fix."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "near-miss",
+      "prompt": "Playwright is not installed and our DDEV container has no browsers. Verify my frontend change.",
+      "expected_output": "A boundary handoff to the setup skill before routine verification starts.",
+      "files": [],
+      "expectations": [
+        "The response recognizes that the prerequisite environment is missing.",
+        "The response directs the task to typo3-playwright-ddev.",
+        "The response does not claim that frontend verification completed."
+      ]
+    }
+  ]
+}
