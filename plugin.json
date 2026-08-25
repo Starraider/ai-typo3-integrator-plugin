@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ai-typo3-integrator-plugin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Reusable Agent Skills for TYPO3 site-package development, configuration, frontend integration, testing, deployment, and SEO.",
   "author": {
     "name": "Sven Kalbhenn",
