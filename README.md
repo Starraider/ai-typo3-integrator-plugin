@@ -14,9 +14,9 @@ Portable [Agent Plugin 1.0.0](https://agent-plugins.org/specification) with reus
 | Skill | Focus |
 | --- | --- |
 | [typo3-content-blocks](skills/typo3-content-blocks/README.md) | Content Blocks configuration, rendering, and troubleshooting |
-| [typo3-container](skills/typo3-container/README.md) | `b13/container` CTypes, nested content, and grid rendering |
 | [typo3-csp](skills/typo3-csp/README.md) | Content Security Policy rollout and hardening |
 | [typo3-deployer-deployment](skills/typo3-deployer-deployment/README.md) | Deployer 8 recipes, upgrades, and GitHub Actions deployments |
+| [typo3-ext-container](skills/typo3-ext-container/README.md) | `b13/container` CTypes, nested content, and grid rendering |
 | [typo3-favicon-manifest](skills/typo3-favicon-manifest/README.md) | Favicons, app icons, and web manifests |
 | [typo3-fluid-patterns](skills/typo3-fluid-patterns/README.md) | Fluid templates, content architecture, accessibility, and JS patterns |
 | [typo3-form-yaml](skills/typo3-form-yaml/README.md) | Versioned EXT:form YAML, editor setup, and form styling |

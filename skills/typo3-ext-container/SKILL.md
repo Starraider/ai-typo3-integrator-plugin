@@ -1,5 +1,5 @@
 ---
-name: typo3-container
+name: typo3-ext-container
 description: Build or review TYPO3 nested-content and grid CTypes with b13/container. Use for B13\Container\Tca\Registry, ContainerConfiguration, ContainerProcessor, two- or three-column containers, editor-facing container options, backend previews, or responsive container rendering in a site package.
 license: CC-BY-4.0
 compatibility: Requires a TYPO3 project using b13/container; verify the installed extension and TYPO3 versions before applying version-specific APIs.

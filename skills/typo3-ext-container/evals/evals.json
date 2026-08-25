@@ -1,5 +1,5 @@
 {
-  "skill_name": "typo3-container",
+  "skill_name": "typo3-ext-container",
   "evals": [
     {
       "id": "two-column-container",

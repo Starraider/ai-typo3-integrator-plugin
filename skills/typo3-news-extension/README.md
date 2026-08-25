@@ -43,7 +43,7 @@ Use the installed Composer package as the concrete source of truth, then clear T
 ## Related skills
 
 - `typo3-form-yaml` — for versioned TYPO3 forms used alongside News content.
-- `typo3-container` — for container layouts that host News plugins.
+- `typo3-ext-container` — for container layouts that host News plugins.
 
 ## License
 

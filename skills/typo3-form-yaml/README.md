@@ -43,7 +43,7 @@ Read [the TYPO3 v14 form patterns](references/typo3-v14-form-patterns.md) before
 ## Related skills
 
 - `typo3-secure-form` — for CAPTCHA, honeypot, and form-security requirements.
-- `typo3-container` — for placing a form in a reusable b13/container layout.
+- `typo3-ext-container` — for placing a form in a reusable b13/container layout.
 
 ## License
 

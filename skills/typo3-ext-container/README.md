@@ -28,7 +28,7 @@ It provides a repeatable approach for registering container CTypes, exposing sty
 
 ## Installation
 
-This directory is an Agent Skill supplied by the `typo3-extension-skills` plugin. It uses the portable Agent Skills core and is automatically discoverable by compatible Agent Plugin clients from `skills/typo3-container/`; no Composer package is installed by this skill itself.
+This directory is an Agent Skill supplied by the `typo3-extension-skills` plugin. It uses the portable Agent Skills core and is automatically discoverable by compatible Agent Plugin clients from `skills/typo3-ext-container/`; no Composer package is installed by this skill itself.
 
 ## Example prompts
 
