@@ -5,7 +5,7 @@ This collection of portable, reusable Skills complies with the [Agent Plugin 1.0
 ## Package contract
 
 - **Plugin:** `ai-typo3-integrator-plugin` (`plugin.json`, schema 1.0.0)
-- **Portable components:** 21 immediate-child [Agent Skills](https://agentskills.io/specification) in `skills/`
+- **Portable components:** 22 immediate-child [Agent Skills](https://agentskills.io/specification) in `skills/`
 - **MCP servers:** none
 - **License:** CC-BY-4.0; see [LICENSE](LICENSE)
 
@@ -22,6 +22,7 @@ This collection of portable, reusable Skills complies with the [Agent Plugin 1.0
 | --- | --- |
 | [typo3-content-blocks](skills/typo3-content-blocks/README.md) | Content Blocks configuration, rendering, and troubleshooting |
 | [typo3-csp](skills/typo3-csp/README.md) | Content Security Policy rollout and hardening |
+| [typo3-ddev-worktree](skills/typo3-ddev-worktree/README.md) | Independent Git worktrees for Composer-based DDEV TYPO3 projects |
 | [typo3-deployer-deployment](skills/typo3-deployer-deployment/README.md) | Deployer 8 recipes, upgrades, and GitHub Actions deployments |
 | [typo3-ext-container](skills/typo3-ext-container/README.md) | `b13/container` CTypes, nested content, and grid rendering |
 | [typo3-ext-news](skills/typo3-ext-news/README.md) | EXT:news configuration, templates, and site-package integration |

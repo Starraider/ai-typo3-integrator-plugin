@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ai-typo3-integrator-plugin",
-  "version": "1.1.0",
-  "description": "Reusable Agent Skills for TYPO3 site-package development, configuration, frontend integration, testing, deployment, and SEO.",
+  "version": "1.2.0",
+  "description": "Reusable Agent Skills for TYPO3 site-package development, DDEV worktrees, configuration, frontend integration, testing, deployment, and SEO.",
   "author": {
     "name": "Sven Kalbhenn",
     "email": "sven@skom.de",
@@ -18,6 +18,8 @@
     "fluid",
     "typoscript",
     "playwright",
-    "deployer"
+    "deployer",
+    "ddev",
+    "git-worktree"
   ]
 }
