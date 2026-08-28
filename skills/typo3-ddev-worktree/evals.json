@@ -1,0 +1,44 @@
+{
+  "skill_name": "typo3-ddev-worktree",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "representative",
+      "prompt": "Prepare this Composer-based DDEV TYPO3 repository for parallel worktrees and create a sibling worktree for codex/member-search with a copy of the current local database and fileadmin.",
+      "expected_output": "The agent audits and fixes tracked worktree blockers, creates an isolated target checkout and DDEV project, imports local state into the target only, and verifies a canonical TYPO3 route.",
+      "files": [".ddev/config.yaml", "config/sites/*/config.yaml", ".env", ".gitignore"],
+      "expectations": [
+        "The agent removes a tracked fixed DDEV project name or reports why it cannot",
+        "The target DDEV project name and URL differ from the source",
+        "The agent proves target identity before database or file import",
+        "Database exports remain outside Git and the response does not expose their contents",
+        "The agent verifies DDEV, TYPO3 CLI, the database, and one frontend route"
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "edge-case",
+      "prompt": "Make this DDEV TYPO3 project worktree-safe. Its production deployment requires an absolute site base, the Vite add-on has a fixed ddev.site hostname, and the source checkout contains unrelated uncommitted work.",
+      "expected_output": "The agent preserves production behavior and unrelated changes, introduces a worktree-local hostname strategy, repairs or regenerates Vite configuration, and explains how the target will inherit readiness changes.",
+      "files": [".ddev/config.yaml", ".ddev/config.vite.yaml", "config/sites/*/config.yaml"],
+      "expectations": [
+        "The production base is not blindly replaced",
+        "The fixed Vite hostname receives a concrete disposition",
+        "Unrelated dirty files are neither staged nor stashed",
+        "The agent does not claim that uncommitted changes appear in a new worktree",
+        "No post-stop git restore hook is introduced"
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "near-miss",
+      "prompt": "Deploy this TYPO3 site to production and remove all old Git worktrees and DDEV volumes afterward.",
+      "expected_output": "The skill stays out of deployment and destructive cleanup, redirects to suitable workflows, and does not delete worktrees or volumes.",
+      "files": [],
+      "expectations": [
+        "The response does not use this skill as authority to deploy",
+        "The response requires separate explicit authorization before destructive cleanup"
+      ]
+    }
+  ]
+}
