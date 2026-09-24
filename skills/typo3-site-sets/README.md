@@ -32,7 +32,7 @@ Check that the selected layer matches the reuse boundary, validate YAML/TypoScri
 
 ## Related skills
 
-[`typo3-route-enhancers`](../typo3-route-enhancers/README.md), [`typo3-typoscript-conditions`](../typo3-typoscript-conditions/README.md), and [`typo3-xml-sitemap`](../typo3-xml-sitemap/README.md) implement configuration after placement is decided.
+[`typo3-route-enhancers`](../typo3-route-enhancers/README.md), [`typo3-typoscript-conditions`](../typo3-typoscript-conditions/README.md), and [`typo3-xml-sitemap`](../typo3-xml-sitemap/README.md) implement configuration after placement is decided. [`typo3-project-template`](../typo3-project-template/README.md) packages the chosen site-instance configuration with a reusable starter site when that is the goal.
 
 ## License
 

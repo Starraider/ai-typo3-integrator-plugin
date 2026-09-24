@@ -11,6 +11,8 @@ Official docs:
 - Lint command: https://docs.typo3.org/p/friendsoftypo3/content-blocks/main/en-us/Commands/Lint/Index.html
 - JSON Schema: https://docs.typo3.org/p/friendsoftypo3/content-blocks/main/en-us/JsonSchema/Index.html
 - Templating: https://docs.typo3.org/p/friendsoftypo3/content-blocks/main/en-us/Templating/Index.html
+- Container Integration: https://docs.typo3.org/p/friendsoftypo3/content-blocks/main/en-us/Guides/ContainerIntegration/Index.html
+- Nested Content Elements: https://docs.typo3.org/p/friendsoftypo3/content-blocks/main/en-us/API/NestedContentElements/Index.html
 - Known Problems: https://docs.typo3.org/p/friendsoftypo3/content-blocks/main/en-us/KnownProblems/Index.html
 
 ## Minimal Content Element
@@ -221,3 +223,147 @@ $GLOBALS['TCA']['tt_content']['columns']['my_prefix_my_identifier']['label'] = '
 - Update frontend and backend preview templates together when editor preview matters.
 - Use project command wrappers, DDEV, or composer scripts when the repository provides them.
 - Verify with `content-blocks:lint` before considering schema work complete.
+
+## Container Integration Patterns (EXT:container / b13/container)
+
+Source: https://docs.typo3.org/p/friendsoftypo3/content-blocks/main/en-us/Guides/ContainerIntegration/Index.html
+
+Content Blocks and EXT:container can be combined: Content Blocks owns the element definition and frontend template, EXT:container owns the grid configuration and backend preview.
+
+### Step 1 — Content Block config.yaml
+
+```yaml
+name: vendor/two-column-container
+typeName: vendor_two_columns_container
+group: container
+saveAndClose: true
+fields:
+  - identifier: header
+    useExistingField: true
+```
+
+- `typeName` must match the CType used in the TCA override below.
+- `saveAndClose: true` is recommended for containers (no additional config needed).
+- Do **not** add `Collection` fields for child columns — EXT:container manages those.
+
+### Step 2 — TCA Override (Direct Assignment, Not Registry)
+
+File: `EXT:site_package/Configuration/TCA/Overrides/tt_content.php`
+
+```php
+<?php
+
+use B13\Container\Tca\ContainerConfiguration;
+
+$containerConfiguration = new ContainerConfiguration(
+    cType: 'vendor_two_columns_container',
+    label: '',       // Leave empty — Content Blocks manages the label
+    description: '', // Leave empty — Content Blocks manages the description
+    grid: [
+        [
+            ['name' => 'Left',  'colPos' => 200],
+            ['name' => 'Right', 'colPos' => 201],
+        ],
+    ]
+);
+$GLOBALS['TCA']['tt_content']['containerConfiguration'][$containerConfiguration->getCType()] = $containerConfiguration->toArray();
+```
+
+**Important:** Use direct `$GLOBALS['TCA']` assignment — **not** `Registry::configureContainer()`. The Registry method is for pure EXT:container setups without Content Blocks.
+
+**EXT:container 4.0.0+**: The preview renderer override (`ContainerPreviewRenderer`) is no longer needed; Content Blocks handles it automatically via its own preview mechanism.
+
+### Step 3 — TypoScript Rendering Definition
+
+The Content Block's TypoScript object (`tt_content.vendor_two_columns_container`) is auto-generated. Extend it with a `ContainerProcessor`:
+
+```typoscript
+tt_content.vendor_two_columns_container {
+    dataProcessing {
+        100 = B13\Container\DataProcessing\ContainerProcessor
+        100 {
+            colPos = 200
+            as = children_left
+        }
+        110 = B13\Container\DataProcessing\ContainerProcessor
+        110 {
+            colPos = 201
+            as = children_right
+        }
+    }
+}
+```
+
+Parameter-free form — auto-names variables `children_<colPos>`:
+
+```typoscript
+tt_content.vendor_two_columns_container {
+    dataProcessing {
+        100 = B13\Container\DataProcessing\ContainerProcessor
+    }
+}
+```
+
+#### TYPO3 v14+ — ContentAreaProcessor (recommended for v14)
+
+EXT:container 4.0+ ships `ContentAreaProcessor`, which lazily loads columns and exposes them via the `content` variable:
+
+```typoscript
+tt_content.vendor_two_columns_container {
+    dataProcessing {
+        100 = B13\Container\DataProcessing\ContentAreaProcessor
+    }
+}
+```
+
+Options:
+- `contentId` — ID of the container to process (defaults to current element UID).
+- `as` — variable name for processed data (defaults to `content`).
+
+### Step 4 — Fluid Template (`templates/frontend.fluid.html`)
+
+**With ContainerProcessor** (children_left / children_right pattern):
+
+```html
+<div class="row">
+    <div class="col-12 col-md-6">
+        <f:for each="{children_left}" as="child">
+            <f:format.raw>{child.renderedContent}</f:format.raw>
+        </f:for>
+    </div>
+    <div class="col-12 col-md-6">
+        <f:for each="{children_right}" as="child">
+            <f:format.raw>{child.renderedContent}</f:format.raw>
+        </f:for>
+    </div>
+</div>
+```
+
+**With ContentAreaProcessor** (TYPO3 v14+ / EXT:container 4.0+):
+
+```html
+<!-- Render all children in a colPos at once -->
+<f:if condition="{content.200}">
+    <div class="col-left">{content.200 -> f:render.contentArea()}</div>
+</f:if>
+
+<!-- Or iterate records individually -->
+<f:if condition="{content.201}">
+    <div class="col-right">
+        <f:for each="{content.201}" as="record">
+            {record -> f:render.record()}
+        </f:for>
+    </div>
+</f:if>
+```
+
+### Responsibility Split Summary
+
+| Concern | Owner |
+|---|---|
+| CType registration | Content Blocks (`config.yaml`, `typeName`) |
+| Label / description / icon | Content Blocks (`labels.xlf`, `assets/icon.svg`) |
+| Column grid (`colPos`) | EXT:container (TCA `containerConfiguration`) |
+| Backend preview renderer | EXT:container ≥ 4.0 (automatic with CB) |
+| Frontend Fluid template | Content Blocks (`templates/frontend.fluid.html`) |
+| Child element styling fields | Both: TCA columns on `tt_content`, Content Block fields if needed |

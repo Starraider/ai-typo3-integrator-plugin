@@ -195,6 +195,7 @@ After deciding the placement, continue with a specialized skill as needed:
 - plugin settings UI via FlexForms: `typo3-flexforms`
 - conditional TypoScript in `setup.typoscript`, imported TypoScript, or site-setting-driven constants: `typo3-typoscript-conditions`
 - translated extension records: `typo3-translatable-extension-data`
+- an importable starter site whose concrete configuration must accompany a sitepackage: `typo3-project-template`
 
 Keep this skill focused on where configuration belongs. Let other TYPO3 skills handle the implementation details inside the chosen files.
 

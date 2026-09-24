@@ -1,0 +1,7 @@
+# Add this hook to .ddev/config.yaml to automate Vite worktree bootstrapping.
+# DDEV executes this host hook before containers start, generating .ddev/config.vite.yaml,
+# .ddev/apache/vite.conf, and cleaning up stale Traefik files automatically.
+
+hooks:
+  pre-start:
+    - exec-host: "./scripts/bootstrap-ddev-worktree.sh"

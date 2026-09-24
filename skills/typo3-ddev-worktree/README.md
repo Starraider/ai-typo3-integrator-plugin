@@ -11,6 +11,7 @@ The skill audits those settings before changing anything. It then guides the age
 ## Use when
 
 - Preparing a DDEV TYPO3 repository so multiple worktrees can run together.
+- Setting up Vite or frontend dev servers with automated DDEV proxying, HMR over HTTPS, and multi-domain TLS across worktrees.
 - Creating a feature or bug-fix worktree that must boot as a separate DDEV project.
 - Copying a source checkout's local database and `fileadmin` state into a new worktree.
 - Diagnosing why a TYPO3 worktree redirects to the original hostname, returns a routing error, or collides with another DDEV project.
@@ -22,7 +23,8 @@ Do not use it for production deployment, non-DDEV Docker projects, ordinary bran
 - A readiness report with blockers, warnings, and evidence paths.
 - Reviewed project configuration changes when preparation is requested.
 - An optional Git worktree with an independent DDEV URL and runtime data.
-- Verification evidence for DDEV, TYPO3, the database, and one canonical frontend route.
+- Ready-to-copy templates in `templates/` for optional Vite frontend dev servers, Apache proxying, TYPO3 `additional.php`, and DDEV hooks.
+- Verification evidence for DDEV, TYPO3, the database, asset delivery (standard CSS / bootstrap-package or Vite), and one canonical route.
 
 ## Context requirements
 
@@ -81,6 +83,8 @@ The workflow follows DDEV's guidance to omit a tracked project name, use directo
 ## Related skills
 
 `file-search` can help locate repository-specific configuration. `new-skill` owns revisions to this skill. Neither replaces the DDEV/TYPO3 workflow here.
+
+Use [`typo3-project-template`](../typo3-project-template/README.md) when the DDEV repository is being turned into a reusable starter template; it owns source redaction, `Initialisation/` data, and clean-install acceptance.
 
 ## License
 

@@ -35,6 +35,66 @@ vendor/bin/typo3 cache:flush -g system
 
 Use the project's DDEV or Make wrappers when present (`ddev composer require b13/container`, etc.).
 
+## 1b. ContentAreaProcessor (TYPO3 v14+ / EXT:container 4.0+)
+
+EXT:container 4.0 introduced `ContentAreaProcessor` as a simpler, lazily-loaded alternative to `ContainerProcessor`. It is designed for TYPO3 v14 or higher.
+
+**Key differences vs. ContainerProcessor:**
+
+| | ContainerProcessor | ContentAreaProcessor |
+|---|---|---|
+| Column loading | Explicit per colPos | Lazy/auto-detected |
+| Variable name | `children_<colPos>` (configurable via `as`) | `content.<colPos>` (configurable via `as`) |
+| TYPO3 requirement | All supported versions | TYPO3 v14+ |
+| Fluid rendering | `{child.renderedContent}` via `f:format.raw` | `f:render.contentArea()` / `f:render.record()` |
+
+**TypoScript:**
+
+```typoscript
+tt_content.my_container < lib.contentElement
+tt_content.my_container {
+    templateName = MyContainer
+    templateRootPaths {
+        10 = EXT:site_package/Resources/Private/Templates/Container/
+    }
+    dataProcessing {
+        100 = B13\Container\DataProcessing\ContentAreaProcessor
+        // Optional overrides:
+        // 100.contentId = {field:uid}  (defaults to current UID)
+        // 100.as = content             (defaults to 'content')
+    }
+}
+```
+
+**Fluid template:**
+
+```html
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<!-- Render an entire colPos as a block -->
+<f:if condition="{content.200}">
+    <div class="col-left">{content.200 -> f:render.contentArea()}</div>
+</f:if>
+
+<!-- Or iterate and render each record individually -->
+<f:if condition="{content.201}">
+    <div class="col-right">
+        <f:for each="{content.201}" as="record">
+            {record -> f:render.record()}
+        </f:for>
+    </div>
+</f:if>
+
+</html>
+```
+
+**Options for `ContentAreaProcessor`:**
+
+- `contentId` — UID of the container to load children for. Defaults to `{field:uid}` (current element).
+- `as` — Fluid variable name for the result. Defaults to `content`.
+
+Use `ContentAreaProcessor` for new TYPO3 v14 projects. Keep `ContainerProcessor` when supporting TYPO3 <14 or when per-column naming (`as = children_left`) is required for template clarity.
+
 ## 2. Registration — `Configuration/TCA/Overrides/tt_content.php`
 
 ```php
@@ -603,3 +663,129 @@ final class AdjustContainerPreview
 8. Create the Fluid template matching `templateName` (case-sensitive). It must render the shared `Container/Utilities` partial and emit classes only from the framework's built-in utility set.
 9. Run cache flush and database analyzer.
 10. Verify in the backend: the New Content Element wizard lists the container, the CType select shows it, styling fields (Appearance palette: bgcolor, full-width toggle, max-width, space before/after, mobile stacking order) appear, and the frontend emits the expected wrapper + stack classes (e.g. Bootstrap `row flex-column-reverse flex-md-row`, Tailwind `flex flex-col-reverse md:grid md:grid-cols-2 gap-6`).
+
+## 11. Integration with Content Blocks (friendsoftypo3/content-blocks)
+
+When the project uses `friendsoftypo3/content-blocks`, the registration and labelling workflow differs from the pure EXT:container approach above. Always read the `typo3-content-blocks` skill alongside this one when both extensions are present.
+
+Source: https://docs.typo3.org/p/friendsoftypo3/content-blocks/main/en-us/Guides/ContainerIntegration/Index.html
+
+### Responsibility Split
+
+| Concern | Pure EXT:container | Content Blocks + EXT:container |
+|---|---|---|
+| CType registration | `Registry::configureContainer()` | Content Block `config.yaml` (auto-registered) |
+| Label / description | `configureContainer()` arguments | `language/labels.xlf` |
+| Icon | `->setIcon()` on config | `assets/icon.svg` in Content Block folder |
+| TCA column grid | Also via `Registry::configureContainer()` | Direct `$GLOBALS['TCA']['tt_content']['containerConfiguration']` |
+| Frontend template | TypoScript FLUIDTEMPLATE with custom paths | Content Block `templates/frontend.fluid.html` |
+| Backend preview | Manual (or PSR-14 listener) | EXT:container ≥ 4.0 handles automatically |
+
+### Step 1 — Content Block config.yaml
+
+```yaml
+name: vendor/two-column-container
+typeName: vendor_two_columns_container
+group: container
+saveAndClose: true
+fields:
+  - identifier: header
+    useExistingField: true
+```
+
+- Do **not** add `Collection` fields for child columns — EXT:container handles those.
+- `typeName` must exactly match the CType registered in the TCA override.
+
+### Step 2 — TCA Override (Direct Assignment, Not Registry)
+
+```php
+<?php
+// EXT:site_package/Configuration/TCA/Overrides/tt_content.php
+use B13\Container\Tca\ContainerConfiguration;
+
+$containerConfiguration = new ContainerConfiguration(
+    cType: 'vendor_two_columns_container',
+    label: '',       // Managed by Content Blocks labels.xlf
+    description: '', // Managed by Content Blocks labels.xlf
+    grid: [
+        [
+            ['name' => 'Left',  'colPos' => 200],
+            ['name' => 'Right', 'colPos' => 201],
+        ],
+    ]
+);
+$GLOBALS['TCA']['tt_content']['containerConfiguration'][$containerConfiguration->getCType()] = $containerConfiguration->toArray();
+```
+
+> **Important:** Do NOT use `Registry::configureContainer()` when Content Blocks
+> manages the CType. The Registry call would create a duplicate CType
+> registration and conflict with Content Blocks auto-generation.
+
+> **EXT:container 4.0.0+:** No longer need to import `ContainerPreviewRenderer`
+> or manually wire the preview — Content Blocks handles it via its own mechanism.
+
+### Step 3 — TypoScript ContainerProcessor
+
+```typoscript
+// Extend the auto-generated Content Block TypoScript object:
+tt_content.vendor_two_columns_container {
+    dataProcessing {
+        100 = B13\Container\DataProcessing\ContainerProcessor
+        100 {
+            colPos = 200
+            as = children_left
+        }
+        110 = B13\Container\DataProcessing\ContainerProcessor
+        110 {
+            colPos = 201
+            as = children_right
+        }
+    }
+}
+
+// TYPO3 v14+ alternative:
+tt_content.vendor_two_columns_container {
+    dataProcessing {
+        100 = B13\Container\DataProcessing\ContentAreaProcessor
+    }
+}
+```
+
+### Step 4 — Fluid Template (in Content Block)
+
+File: `EXT:site_package/ContentBlocks/ContentElements/two-column-container/templates/frontend.fluid.html`
+
+**ContainerProcessor variant:**
+
+```html
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="row">
+    <div class="col-12 col-md-6">
+        <f:for each="{children_left}" as="child">
+            <f:format.raw>{child.renderedContent}</f:format.raw>
+        </f:for>
+    </div>
+    <div class="col-12 col-md-6">
+        <f:for each="{children_right}" as="child">
+            <f:format.raw>{child.renderedContent}</f:format.raw>
+        </f:for>
+    </div>
+</div>
+</html>
+```
+
+**ContentAreaProcessor variant (v14+):**
+
+```html
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="row">
+    <f:if condition="{content.200}">
+        <div class="col-12 col-md-6">{content.200 -> f:render.contentArea()}</div>
+    </f:if>
+    <f:if condition="{content.201}">
+        <div class="col-12 col-md-6">{content.201 -> f:render.contentArea()}</div>
+    </f:if>
+</div>
+</html>
+```
+

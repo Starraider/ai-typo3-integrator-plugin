@@ -67,6 +67,8 @@ packages/my_site_package/
 
 Completion: all mandatory directories and files exist; `composer validate` passes.
 
+> **Starter-site boundary:** `Initialisation/` is optional for an ordinary sitepackage. Use `typo3-project-template` when the sitepackage must ship an importable page tree, FAL assets, and a first-install site configuration; it defines the export, redaction, and clean-install checks for that payload.
+
 ---
 
 ### 2. Write `composer.json`
@@ -339,6 +341,7 @@ Completion: the frontend page renders with your templates; no Fluid or TypoScrip
 - XML sitemap configuration: `typo3-xml-sitemap`
 - Custom content elements via Content Blocks: `typo3-content-blocks`
 - DDEV + Playwright browser testing: `typo3-playwright-ddev`
+- Reproducible starter-site data, distributions, and `Initialisation/` exports: `typo3-project-template`
 
 ## Completion And Boundaries
 

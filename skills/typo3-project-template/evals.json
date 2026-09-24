@@ -1,0 +1,42 @@
+{
+  "skill_name": "typo3-project-template",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "representative",
+      "prompt": "Create a TYPO3 v14 template from our existing Composer project. It should provide a sitepackage, English demo pages, a basic site configuration, and sample images.",
+      "expected_output": "A delivery decision, a redacted extraction plan, Initialisation layout, installation steps, and a clean-install acceptance check.",
+      "files": ["composer.json", "packages/acme_sitepackage/"],
+      "expectations": [
+        "Chooses a repository template plus a sitepackage payload when project infrastructure is in scope.",
+        "Places page/content data in data.xml, referenced media in data.xml.files, and the basic config under Initialisation/Site/<identifier>/config.yaml.",
+        "Separates sitepackage implementation assets from fileadmin and excludes secrets and backend users.",
+        "Requires a fresh instance test using vendor/bin/typo3 extension:setup."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "edge-case",
+      "prompt": "Add demo content to a v14 sitepackage that will be installed in systems which may already contain a site called main.",
+      "expected_output": "An additive initializer strategy that identifies the site-identifier conflict and avoids overwriting the target site's configuration.",
+      "files": ["packages/acme_sitepackage/Initialisation/Site/main/config.yaml"],
+      "expectations": [
+        "Explains that existing same-identifier configuration is retained by Core.",
+        "Offers an explicit identifier/configuration decision instead of assuming an overwrite.",
+        "Avoids a custom event listener unless declarative initialization cannot meet the requirement."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "near-miss",
+      "prompt": "Copy our production TYPO3 project into a public introduction template exactly as it is, including user accounts and fileadmin.",
+      "expected_output": "A safe extraction plan that requires authorization and redaction before any template output is created.",
+      "files": [],
+      "expectations": [
+        "Excludes credentials, backend users, customer data, and unlicensed media.",
+        "Does not treat an unreviewed production database export as demo data.",
+        "Keeps production site configuration and deployment secrets out of the distributable template."
+      ]
+    }
+  ]
+}

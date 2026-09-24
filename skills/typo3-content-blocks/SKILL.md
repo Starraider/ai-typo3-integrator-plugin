@@ -1,6 +1,6 @@
 ---
 name: typo3-content-blocks
-description: Create, edit, and troubleshoot TYPO3 Content Blocks from the friendsoftypo3/content-blocks extension. Use this skill whenever the user asks for TYPO3 Content Blocks, content block `config.yaml`, `ContentBlocks/ContentElements`, `ContentBlocks/PageTypes`, `ContentBlocks/RecordTypes`, Content Block fields, templates, backend previews, icons, generated fields, the `make:content-block` command, `content-blocks:lint`, schema validation errors, missing CType/page/record types, broken labels, or Content Block rendering/debugging.
+description: Create, edit, and troubleshoot TYPO3 Content Blocks from the friendsoftypo3/content-blocks extension. Use this skill whenever the user asks for TYPO3 Content Blocks, content block `config.yaml`, `ContentBlocks/ContentElements`, `ContentBlocks/PageTypes`, `ContentBlocks/RecordTypes`, Content Block fields, templates, backend previews, icons, generated fields, the `make:content-block` command, `content-blocks:lint`, schema validation errors, missing CType/page/record types, broken labels, Content Block rendering/debugging, or integrating Content Blocks with EXT:container (b13/container) for nested grid containers.
 license: CC-BY-4.0
 compatibility: Requires a TYPO3 project with friendsoftypo3/content-blocks installed; the project CLI is used for generation and validation when available.
 ---
@@ -111,6 +111,137 @@ Use Content Block ViewHelpers for local assets and labels:
 <f:asset.script identifier="myElementJs" src="{cb:assetPath()}/frontend.js" />
 <f:translate key="{cb:languagePath()}:header" />
 ```
+
+## Container Integration (EXT:container / b13/container)
+
+Content Blocks and EXT:container complement each other: Content Blocks owns the element definition, icon registration, and Fluid templates; EXT:container owns the grid configuration and backend column rendering.
+
+### Step 1 — Define the Content Block
+
+Create a Content Block with `group: container` and `saveAndClose: true`. Do not add Collection fields for the child columns; the column layout is handled by EXT:container.
+
+```yaml
+name: vendor/two-column-container
+typeName: vendor_two_columns_container
+group: container
+saveAndClose: true
+fields:
+  - identifier: header
+    useExistingField: true
+```
+
+### Step 2 — Register the Container Grid via TCA Override
+
+Register the column grid directly on `$GLOBALS['TCA']`, **not** via `Registry::configureContainer()`. Content Blocks reads this TCA key to wire the backend preview.
+
+File: `EXT:site_package/Configuration/TCA/Overrides/tt_content.php`
+
+```php
+<?php
+
+use B13\Container\Tca\ContainerConfiguration;
+
+$containerConfiguration = new ContainerConfiguration(
+    cType: 'vendor_two_columns_container',
+    label: '',       // label is managed by Content Blocks
+    description: '', // description is managed by Content Blocks
+    grid: [
+        [
+            ['name' => 'Left',  'colPos' => 200],
+            ['name' => 'Right', 'colPos' => 201],
+        ],
+    ]
+);
+$GLOBALS['TCA']['tt_content']['containerConfiguration'][$containerConfiguration->getCType()] = $containerConfiguration->toArray();
+```
+
+> **Note:** As of EXT:container 4.0.0 you no longer need to manually override the preview renderer — Content Blocks handles that automatically.
+
+### Step 3 — Add the TypoScript Rendering Definition
+
+Extend the Content Block's TypoScript object with a `ContainerProcessor` for each column:
+
+```typoscript
+tt_content.vendor_two_columns_container {
+    dataProcessing {
+        100 = B13\Container\DataProcessing\ContainerProcessor
+        100 {
+            colPos = 200
+            as = children_left
+        }
+        110 = B13\Container\DataProcessing\ContainerProcessor
+        110 {
+            colPos = 201
+            as = children_right
+        }
+    }
+}
+```
+
+Alternatively, use the parameter-free form to get auto-named variables `children_<colPos>`:
+
+```typoscript
+tt_content.vendor_two_columns_container {
+    dataProcessing {
+        100 = B13\Container\DataProcessing\ContainerProcessor
+    }
+}
+```
+
+### Step 4 — Render Children in the Fluid Template
+
+In `templates/frontend.fluid.html`, iterate the processor-populated variables:
+
+```html
+<div class="row">
+    <div class="col-12 col-md-6">
+        <f:for each="{children_left}" as="child">
+            <f:format.raw>{child.renderedContent}</f:format.raw>
+        </f:for>
+    </div>
+    <div class="col-12 col-md-6">
+        <f:for each="{children_right}" as="child">
+            <f:format.raw>{child.renderedContent}</f:format.raw>
+        </f:for>
+    </div>
+</div>
+```
+
+#### TYPO3 v14 — ContentAreaProcessor alternative
+
+For TYPO3 v14+ with EXT:container 4.0+, you can use `ContentAreaProcessor` instead. It lazily loads container columns into a `content` variable and enables rendering with the `f:render.contentArea()` and `f:render.record()` ViewHelpers:
+
+```typoscript
+tt_content.vendor_two_columns_container {
+    dataProcessing {
+        100 = B13\Container\DataProcessing\ContentAreaProcessor
+    }
+}
+```
+
+```html
+<f:if condition="{content.200}">
+    <div class="col-left">{content.200 -> f:render.contentArea()}</div>
+</f:if>
+<f:if condition="{content.201}">
+    <div class="col-right">
+        <f:for each="{content.201}" as="record">
+            {record -> f:render.record()}
+        </f:for>
+    </div>
+</f:if>
+```
+
+### Key Differences vs. Pure b13/container Approach
+
+| Concern | Pure b13/container | Content Blocks + b13/container |
+|---|---|---|
+| CType registration | `Registry::configureContainer()` | Content Block `config.yaml` (auto-registered) |
+| Label/description | In `configureContainer()` args | `language/labels.xlf` |
+| TCA column grid | Also via `Registry::configureContainer()` | Direct `$GLOBALS['TCA']['tt_content']['containerConfiguration']` |
+| Frontend template | Site TypoScript + custom Fluid paths | Content Block `templates/frontend.fluid.html` |
+| Icon | `->setIcon()` on config | `assets/icon.svg` in Content Block |
+| Preview renderer override | Required for older versions | Not needed for EXT:container ≥ 4.0.0 |
 
 ## References
 

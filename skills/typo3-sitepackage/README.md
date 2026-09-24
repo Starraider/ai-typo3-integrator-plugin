@@ -55,6 +55,7 @@ Maintainers can run `new-skill/scripts/validate-skill.sh skills/typo3-sitepackag
 - [`typo3-route-enhancers`](../typo3-route-enhancers/README.md) — URL routing in `config/sites/`
 - [`typo3-content-blocks`](../typo3-content-blocks/README.md) — Custom content elements via Content Blocks
 - [`typo3-playwright-ddev`](../typo3-playwright-ddev/README.md) — Browser testing of the rendered site
+- [`typo3-project-template`](../typo3-project-template/README.md) — Package a sitepackage with redacted demo pages, FAL assets, and first-install configuration
 
 ## License
 

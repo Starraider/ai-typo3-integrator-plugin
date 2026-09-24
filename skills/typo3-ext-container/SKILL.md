@@ -1,6 +1,6 @@
 ---
 name: typo3-ext-container
-description: Build or review TYPO3 nested-content and grid CTypes with b13/container. Use for B13\Container\Tca\Registry, ContainerConfiguration, ContainerProcessor, two- or three-column containers, editor-facing container options, backend previews, or responsive container rendering in a site package.
+description: Build or review TYPO3 nested-content and grid CTypes with b13/container. Use for B13\Container\Tca\Registry, ContainerConfiguration, ContainerProcessor, ContentAreaProcessor (TYPO3 v14+), two- or three-column containers, editor-facing container options, backend previews, responsive container rendering in a site package, or integrating EXT:container with Content Blocks (friendsoftypo3/content-blocks).
 license: CC-BY-4.0
 compatibility: Requires a TYPO3 project using b13/container; verify the installed extension and TYPO3 versions before applying version-specific APIs.
 ---
@@ -51,6 +51,103 @@ own generic TYPO3 backend layouts or a new design system.
    option and a container with child content in every declared column.
    **Complete when:** database columns, processed children, responsive layout,
    and editor controls all behave as specified.
+
+## Integration with Content Blocks (friendsoftypo3/content-blocks)
+
+When the project uses `friendsoftypo3/content-blocks`, the workflow for adding
+a container CType changes significantly. Content Blocks handles CType
+registration, labels, icons, and the frontend Fluid template. EXT:container
+provides only the column grid and backend preview.
+
+**Do not** use `Registry::configureContainer()` in this mode. Instead:
+
+1. **Define a Content Block** (`config.yaml`) with `group: container` and
+   `saveAndClose: true`. Omit Collection fields for child columns.
+
+   ```yaml
+   name: vendor/two-column-container
+   typeName: vendor_two_columns_container
+   group: container
+   saveAndClose: true
+   fields:
+     - identifier: header
+       useExistingField: true
+   ```
+
+2. **Register the column grid directly in TCA** (not via the Registry):
+
+   ```php
+   // EXT:site_package/Configuration/TCA/Overrides/tt_content.php
+   use B13\Container\Tca\ContainerConfiguration;
+
+   $containerConfiguration = new ContainerConfiguration(
+       cType: 'vendor_two_columns_container',
+       label: '',       // managed by Content Blocks labels.xlf
+       description: '', // managed by Content Blocks labels.xlf
+       grid: [
+           [
+               ['name' => 'Left',  'colPos' => 200],
+               ['name' => 'Right', 'colPos' => 201],
+           ],
+       ]
+   );
+   $GLOBALS['TCA']['tt_content']['containerConfiguration'][$containerConfiguration->getCType()] = $containerConfiguration->toArray();
+   ```
+
+   > EXT:container **4.0.0+**: Preview renderer override is no longer required;
+   > Content Blocks handles it automatically.
+
+3. **Add a TypoScript ContainerProcessor** to the Content Block's rendering:
+
+   ```typoscript
+   tt_content.vendor_two_columns_container {
+       dataProcessing {
+           100 = B13\Container\DataProcessing\ContainerProcessor
+           100 { colPos = 200 as = children_left }
+           110 = B13\Container\DataProcessing\ContainerProcessor
+           110 { colPos = 201 as = children_right }
+       }
+   }
+   ```
+
+   **TYPO3 v14+ alternative** — use `ContentAreaProcessor` for automatic lazy
+   loading of columns into the `content` variable:
+
+   ```typoscript
+   tt_content.vendor_two_columns_container {
+       dataProcessing {
+           100 = B13\Container\DataProcessing\ContentAreaProcessor
+       }
+   }
+   ```
+
+4. **Render children** in the Content Block's `templates/frontend.fluid.html`:
+
+   With `ContainerProcessor`:
+   ```html
+   <f:for each="{children_left}" as="child">
+       <f:format.raw>{child.renderedContent}</f:format.raw>
+   </f:for>
+   ```
+
+   With `ContentAreaProcessor` (v14+):
+   ```html
+   <f:if condition="{content.200}">{content.200 -> f:render.contentArea()}</f:if>
+   <f:if condition="{content.201}">{content.201 -> f:render.contentArea()}</f:if>
+   ```
+
+**Summary of responsibility split:**
+
+| Concern | Owner |
+|---|---|
+| CType registration | Content Blocks (`config.yaml`) |
+| Labels / description / icon | Content Blocks (`labels.xlf`, `assets/icon.svg`) |
+| Column grid (colPos) | EXT:container (TCA `containerConfiguration`) |
+| Backend preview | EXT:container ≥ 4.0 (automatic) |
+| Frontend Fluid template | Content Blocks (`templates/frontend.fluid.html`) |
+
+Always pair this skill with the `typo3-content-blocks` skill when working in
+this combined mode.
 
 ## References
 

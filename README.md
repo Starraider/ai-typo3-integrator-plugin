@@ -5,7 +5,7 @@ This collection of portable, reusable Skills complies with the [Agent Plugin 1.0
 ## Package contract
 
 - **Plugin:** `ai-typo3-integrator-plugin` (`plugin.json`, schema 1.0.0)
-- **Portable components:** 22 immediate-child [Agent Skills](https://agentskills.io/specification) in `skills/`
+- **Portable components:** 23 immediate-child [Agent Skills](https://agentskills.io/specification) in `skills/`
 - **MCP servers:** none
 - **License:** CC-BY-4.0; see [LICENSE](LICENSE)
 
@@ -34,6 +34,7 @@ This collection of portable, reusable Skills complies with the [Agent Plugin 1.0
 | [typo3-menu-dataprocessor](skills/typo3-menu-dataprocessor/README.md) | Navigation menus and language menus via data processors |
 | [typo3-playwright-ddev](skills/typo3-playwright-ddev/README.md) | Playwright and accessibility test setup in DDEV |
 | [typo3-playwright-workflow](skills/typo3-playwright-workflow/README.md) | Focused Playwright and visual-regression verification |
+| [typo3-project-template](skills/typo3-project-template/README.md) | Reproducible TYPO3 v14 starter sites, distributions, and demo-data payloads |
 | [typo3-rich-snippets](skills/typo3-rich-snippets/README.md) | schema.org structured data and JSON-LD integration |
 | [typo3-route-enhancers](skills/typo3-route-enhancers/README.md) | Speaking URLs and Extbase route enhancers |
 | [typo3-rte-ckeditor](skills/typo3-rte-ckeditor/README.md) | CKEditor 5/RTE configuration and presets |
