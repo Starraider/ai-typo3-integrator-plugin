@@ -178,5 +178,5 @@ if [[ "$updated_state" != 'v8' ]]; then
 fi
 
 printf '%s\n' 'Composer dependency upgraded to Deployer 8.'
-printf '%s\n' 'Review and migrate every recipe finding before running a deployment:'
+printf '%s\n' 'Review and migrate every recipe and pipeline finding before running a deployment:'
 php "$inspector" --project-root "$project_root" --format text

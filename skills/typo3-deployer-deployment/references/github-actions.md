@@ -87,6 +87,61 @@ vendor/bin/dep deploy "$DEPLOYER_SELECTOR" --no-interaction -vvv
 
 Before that call, the workflow checks that the binary reports major version 8, validates the SSH material with `configure-deployer-ssh.sh --verify`, and loads the recipe task tree. Do not add `--no-interaction` to hide missing recipe values. Resolve every required value before the deployment step.
 
+## Upgrading an existing Deployer v7 workflow to v8
+
+When migrating an existing repository from Deployer 7 to 8, audit and update the GitHub Actions workflow alongside the recipe:
+
+1. **Update runner PHP version to 8.3+:**
+   ```yaml
+   - name: Set up PHP and Composer
+     uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+     with:
+       php-version: '8.3' # Deployer 8 requires PHP 8.3+
+       tools: composer:v2
+       coverage: none
+   ```
+
+2. **Remove `dep self-update` and curl download steps:**
+   Deployer 8 removed self-update. Running `dep self-update` will cause a fatal error. Remove any curl commands downloading `deployer.phar`. Rely strictly on `composer install` installing `deployer/deployer:^8.0` into `vendor/bin/dep`.
+
+3. **Pre-build release assets on the runner for `local_archive`:**
+   In Deployer 7, builds often ran on the remote host via Deployer tasks. With Deployer 8's recommended `local_archive` strategy, build all frontend and compiled assets on the runner before calling Deployer:
+   ```yaml
+   - name: Build frontend assets
+     run: |
+       npm ci
+       npm run build
+   ```
+
+4. **Verify Deployer 8 binary version in CI:**
+   Add a gate ensuring Deployer 8 is installed before calling deploy:
+   ```yaml
+   - name: Require Deployer 8
+     shell: bash
+     run: |
+       set -euo pipefail
+       version="$(vendor/bin/dep --version)"
+       if [[ ! "$version" =~ ^Deployer[[:space:]]+8\. ]]; then
+         printf 'Expected Deployer 8, got: %s\n' "$version" >&2
+         exit 1
+       fi
+   ```
+
+5. **Eliminate insecure SSH flags:**
+   Audit and eliminate `-o StrictHostKeyChecking=no` or dynamic `ssh-keyscan >> ~/.ssh/known_hosts`. Use `scripts/configure-ci-ssh.sh` (or `.github/scripts/configure-deployer-ssh.sh`) with pinned `DEPLOY_KNOWN_HOSTS` and `DEPLOY_SSH_PRIVATE_KEY` secrets.
+
+6. **Automatic author tracking:**
+   Deployer 8 automatically detects `GITHUB_ACTOR` as the deployment author in `dep releases`. Any manual `-o user=...` overrides in the CI deploy command can be safely removed.
+
+7. **Ensure non-overlapping concurrency:**
+   Ensure the workflow defines:
+   ```yaml
+   concurrency:
+     group: deploy-typo3-${{ matrix.environment || 'production' }}
+     cancel-in-progress: false
+   ```
+   `cancel-in-progress: false` prevents parallel runs from colliding or leaving a stale `.dep/deploy.lock`.
+
 ## Security review
 
 - Do not trigger a secret-bearing deployment from `pull_request`, `pull_request_target`, Dependabot, or untrusted forks.
@@ -112,6 +167,8 @@ shellcheck .github/scripts/configure-deployer-ssh.sh
 
 ## Sources
 
+- [Deployer 8 getting started](https://deployer.org/docs/8.x/getting-started)
+- [Deployer v8 release overview](https://deployer.org/blog/deployer-v8)
 - [Using secrets in GitHub Actions](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
 - [Deploying with GitHub Actions](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments)
 - [Deployments and environments](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)
@@ -119,4 +176,4 @@ shellcheck .github/scripts/configure-deployer-ssh.sh
 - [Deployer 8 hosts](https://deployer.org/docs/8.x/hosts)
 - [Deployer 8 update code recipe](https://deployer.org/docs/8.x/recipe/deploy/update_code)
 
-Checked on 2026-08-25.
+Checked on 2026-09-24.

@@ -70,7 +70,24 @@ If the project deliberately uses `clone`, `archive`, or rsync, document which ma
 
 ## TYPO3 tasks and database changes
 
-The v8 TYPO3 recipe runs TYPO3 folder setup, extension setup, language updates, cache flush, and cache warmup as part of deployment. Extension setup can change the database schema. Before the first production run:
+The v8 TYPO3 recipe (`recipe/typo3.php`) is based on `recipe/common.php` and defines the complete deployment lifecycle:
+
+1. `deploy:info` – Displays info about deployment
+2. `deploy:setup` – Prepares deployment directory structure on host
+3. `deploy:lock` – Locks deployment to prevent concurrent runs
+4. `deploy:release` – Prepares new release directory
+5. `typo3:update_code` – Fetches code via Git or rsync (or `local_archive` in CI)
+6. `deploy:shared` – Creates symlinks for shared files and directories
+7. `deploy:writable` – Configures permissions on writable directories
+8. `deploy:vendors` – Installs Composer packages with production options (`--no-dev --optimize-autoloader`)
+9. `typo3:install:fixfolderstructure` – Automatically creates required files and folders for TYPO3
+10. `typo3:extension:setup` – Sets up extensions and applies database schema updates
+11. `typo3:language:update` – Updates language files for activated extensions
+12. `typo3:cache:flush` – Clears all TYPO3 caches
+13. `typo3:cache:warmup` – Warms up system caches
+14. `deploy:publish` – Atomic symlink swap (`deploy:symlink`), unlocks (`deploy:unlock`), cleans old releases (`deploy:cleanup`), and emits `deploy:success`
+
+Extension setup can mutate the database schema. Before the first production run:
 
 - identify the database backup or snapshot procedure;
 - confirm that CLI and web PHP use compatible versions and extensions;
@@ -78,6 +95,30 @@ The v8 TYPO3 recipe runs TYPO3 folder setup, extension setup, language updates, 
 - verify that the deployment user can write required shared and runtime paths;
 - decide whether frontend assets are built in CI, locally, or on the target;
 - keep a previous release until the new release and public URL pass checks.
+
+### Ad-hoc TYPO3 commands
+
+Deployer 8 exposes individual TYPO3 maintenance commands:
+
+```bash
+vendor/bin/dep typo3:cache:flush <selector>          # Clear all caches
+vendor/bin/dep typo3:cache:warmup <selector>         # Warm up system caches
+vendor/bin/dep typo3:extension:setup <selector>      # Run schema migration & extension setup
+vendor/bin/dep typo3:language:update <selector>      # Update translation files
+vendor/bin/dep typo3:install:fixfolderstructure <selector> # Verify folder structure
+vendor/bin/dep logs:app <selector>                   # Tail TYPO3 log files (var/log/typo3_*.log)
+```
+
+## Deployer 8 modern syntax & features
+
+- **Named arguments:** `run('composer install', timeout: 300, nothrow: true, cwd: '{{release_path}}')`. The v7 `$options` array is removed; `no_throw` is `nothrow`, `real_time_output` is `forceOutput`, and `idle_timeout` is `idleTimeout`.
+- **Multiple secrets:** `run('echo %db_pass%', secrets: ['db_pass' => getenv('DB_PASSWORD')])`. Placeholders are securely masked in logs.
+- **Quote helper:** Use `quote($arg)` or the template filter `{{ message | quote }}` instead of `escapeshellarg()`.
+- **Template escaping:** Output literal `{{` by escaping with a backslash: `run('echo \{{not_interpolated}}')`.
+- **Composer version pinning:** Pin remote Composer version with `set('composer_version', '2.7')`.
+- **Host shell customization:** `host('prod')->setShellPath('/bin/bash')`.
+- **ACL write modes:** Enhanced permissions via `writable_acl_groups` and `writable_acl_force`.
+- **MAML recipes:** In addition to PHP and YAML, Deployer 8 supports `deploy.maml` recipes.
 
 ## Local validation
 
@@ -96,9 +137,10 @@ Inspect the task tree for project-specific tasks that were previously attached t
 ## Sources
 
 - [Deployer 8 getting started](https://deployer.org/docs/8.x/getting-started)
+- [Deployer v8 release overview](https://deployer.org/blog/deployer-v8)
 - [Deployer 8 basics](https://deployer.org/docs/8.x/basics)
 - [Deployer 8 hosts](https://deployer.org/docs/8.x/hosts)
 - [Deployer 8 TYPO3 recipe](https://deployer.org/docs/8.x/recipe/typo3)
 - [Deployer 8 update code recipe](https://deployer.org/docs/8.x/recipe/deploy/update_code)
 
-Checked on 2026-08-25.
+Checked on 2026-09-24.

@@ -1,6 +1,6 @@
 ---
 name: typo3-deployer-deployment
-description: Configure and operate Deployer 8 for Composer-based TYPO3 projects, including new deploy.php recipes, safe in-place upgrades from Deployer 7, and GitHub Actions SSH deployments. Use when deploying TYPO3 with Deployer, migrating deployer/deployer from v7 to v8, or adding a CI deployment workflow. Do not use for TYPO3 core upgrades, server provisioning, or non-Deployer release systems.
+description: Configure and operate Deployer 8 for Composer-based TYPO3 projects, including new deploy.php recipes, safe in-place upgrades from Deployer 7, upgrading existing v7 deployment pipelines to v8, and GitHub Actions SSH deployments. Use when deploying TYPO3 with Deployer, migrating deployer/deployer from v7 to v8, upgrading a Deployer CI/CD pipeline, or adding a CI deployment workflow. Do not use for TYPO3 core upgrades, server provisioning, or non-Deployer release systems.
 license: CC-BY-4.0
 compatibility: Requires PHP 8.3 or later, Composer 2, Git, OpenSSH, and network access to the deployment host. GitHub Actions setup also requires repository administration access for environments, secrets, and variables.
 ---
@@ -9,15 +9,15 @@ compatibility: Requires PHP 8.3 or later, Composer 2, Git, OpenSSH, and network 
 
 ## Outcome
 
-Produce a Composer-based TYPO3 deployment that uses `deployer/deployer:^8.0`, a Deployer 8-compatible recipe, and, when requested, a GitHub Actions workflow with pinned SSH host authentication. Preserve an existing Deployer 7 release layout during an in-place upgrade.
+Produce a Composer-based TYPO3 deployment that uses `deployer/deployer:^8.0`, a Deployer 8-compatible recipe, and, when requested, a GitHub Actions workflow with pinned SSH host authentication. Safely upgrade an existing Deployer 7 recipe and CI/CD deployment pipeline in place while preserving the remote release layout and shared state.
 
 Do not provision servers, upgrade TYPO3 core, invent production credentials, or replace another deployment system unless the user expands the scope.
 
 ## Workflow
 
-1. Inspect the project before changing it.
+1. Inspect the project and deployment pipelines before changing anything.
 
-   Read repository instructions, `composer.json`, `composer.lock`, every Deployer recipe or inventory, deployment documentation, and existing workflows. Run:
+   Read repository instructions, `composer.json`, `composer.lock`, every Deployer recipe or inventory, deployment documentation, and existing CI/CD workflows (`.github/workflows/`, `.gitlab-ci.yml`, `bitbucket-pipelines.yml`). Run:
 
    ```bash
    php scripts/inspect-deployer.php --project-root . --format json
@@ -25,13 +25,20 @@ Do not provision servers, upgrade TYPO3 core, invent production credentials, or 
 
    Resolve the deployment target, web root, deploy path, remote user, release trigger, shared files and directories, writable directories, build steps, database update policy, and rollback expectations. Treat host names and paths as configuration. Treat private keys, passphrases, tokens, and application `.env` contents as secrets.
 
-   Completion: the current Deployer state is classified as absent, v7, v8, mixed, or unknown, and every value that could direct a deployment to the wrong server is known or left as an explicit placeholder.
+   Completion: the current Deployer state is classified as absent, v7, v8, mixed, or unknown; recipe and pipeline hotspots are identified; and every value that could direct a deployment to the wrong server is known or left as an explicit placeholder.
 
 2. Select the matching implementation branch.
 
    - For a new setup, read [the TYPO3 recipe guide](references/deployer-8-typo3.md). Add Deployer to `require-dev`, create or adapt `deploy.php`, and preserve the project's existing build and shared-state conventions.
-   - For a v7 installation, read [the v7 to v8 upgrade guide](references/upgrade-v7-to-v8.md) completely. Run `scripts/upgrade-deployer-v8.sh` without `--apply`, review the report, then run it with `--apply` when the requested change authorizes dependency updates. Migrate every reported recipe hotspot by meaning. Do not run `dep init` over the existing recipe.
-   - For GitHub Actions, also read [the GitHub Actions deployment guide](references/github-actions.md). Copy [the workflow template](templates/deploy-typo3.yml) to `.github/workflows/deploy-typo3.yml` and copy `scripts/configure-ci-ssh.sh` to `.github/scripts/configure-deployer-ssh.sh`. Adapt names and paths without placing secret values in Git.
+   - For a v7 installation and recipe migration, read [the v7 to v8 upgrade guide](references/upgrade-v7-to-v8.md) completely. Run `scripts/upgrade-deployer-v8.sh` without `--apply`, review the report, then run it with `--apply` when the requested change authorizes dependency updates. Migrate every reported recipe hotspot by meaning. Do not run `dep init` over the existing recipe.
+   - For upgrading an existing v7 deployment pipeline to v8, also read [the pipeline upgrade section](references/upgrade-v7-to-v8.md#upgrading-a-deployer-v7-cicd-pipeline-to-v8) and [the GitHub Actions guide](references/github-actions.md).
+     - Update runner PHP to 8.3 or later in setup actions/containers.
+     - Remove obsolete `dep self-update` and dynamic `deployer.phar` curl downloads; invoke `vendor/bin/dep`.
+     - Switch recipe update strategy to `local_archive` so runner builds deploy without target git credentials.
+     - Pre-build release assets (`npm ci && npm run build`) on the runner before Deployer archives the release.
+     - Harden SSH: eliminate `-o StrictHostKeyChecking=no` and dynamic `ssh-keyscan` in favor of verified `DEPLOY_KNOWN_HOSTS` and dedicated `DEPLOY_SSH_PRIVATE_KEY`.
+     - Replace legacy CLI invocations with `vendor/bin/dep deploy "$DEPLOYER_SELECTOR" --no-interaction -vvv`.
+   - For a new GitHub Actions setup, read [the GitHub Actions deployment guide](references/github-actions.md). Copy [the workflow template](templates/deploy-typo3.yml) to `.github/workflows/deploy-typo3.yml` and copy `scripts/configure-ci-ssh.sh` to `.github/scripts/configure-deployer-ssh.sh`. Adapt names and paths without placing secret values in Git.
 
    When CI deploys the checked-out commit, prefer Deployer 8's `local_archive` update strategy. This avoids a second GitHub credential on the target server. Keep another strategy only when the repository already relies on it and its authentication path is verified.
 
@@ -72,10 +79,11 @@ Do not provision servers, upgrade TYPO3 core, invent production credentials, or 
 
 ## Resources
 
-- `scripts/inspect-deployer.php`: read-only Deployer version and recipe hotspot detection.
+- `scripts/inspect-deployer.php`: read-only Deployer version, recipe, and CI/CD pipeline hotspot detection.
 - `scripts/upgrade-deployer-v8.sh`: transactional Composer dependency upgrade from v7 to v8. Recipe migration remains an explicit reviewed step.
 - `scripts/configure-ci-ssh.sh`: non-interactive GitHub runner SSH setup with a pinned host key.
-- [Deployer 8 and TYPO3](references/deployer-8-typo3.md): recipe design and TYPO3 release checks.
-- [Upgrade from Deployer 7](references/upgrade-v7-to-v8.md): breaking changes and in-place migration sequence.
-- [GitHub Actions deployment](references/github-actions.md): credentials, environment settings, secrets, variables, and workflow operation.
+- [Deployer 8 and TYPO3](references/deployer-8-typo3.md): recipe design, Deployer 8 features, and TYPO3 release checks.
+- [Upgrade from Deployer 7](references/upgrade-v7-to-v8.md): breaking changes, recipe migration, and CI/CD pipeline upgrade guide.
+- [GitHub Actions deployment](references/github-actions.md): credentials, environment settings, secrets, variables, workflow operation, and upgrading v7 pipelines.
 - [Workflow template](templates/deploy-typo3.yml): manual production deployment through Deployer 8.
+

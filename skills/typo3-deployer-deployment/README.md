@@ -1,15 +1,16 @@
 # TYPO3 Deployer deployment
 
-This skill configures Deployer 8 for Composer-based TYPO3 projects. It can create a recipe, detect and upgrade a Deployer 7 installation in place, and add a GitHub Actions deployment that authenticates to the target over SSH.
+This skill configures Deployer 8 for Composer-based TYPO3 projects. It can create a recipe, detect and upgrade a Deployer 7 installation in place, upgrade an existing v7 deployment pipeline to v8, and add a GitHub Actions deployment that authenticates to the target over SSH.
 
 ## What this skill solves
 
-Deployer upgrades touch more than a Composer constraint. Deployer 8 requires PHP 8.3, changes several recipe APIs, and ships a different TYPO3 recipe configuration. CI adds a second source of mistakes around SSH keys, host verification, environment protections, and the exact revision being released. This skill handles those parts as one reviewed workflow while keeping the live deployment behind a separate authorization step.
+Deployer upgrades touch more than a Composer constraint. Deployer 8 requires PHP 8.3, changes several recipe APIs, and ships a different TYPO3 recipe configuration. CI pipelines add another layer of challenges around runner PHP runtimes, the removal of `self-update`, shifting from remote `git clone` to `local_archive`, pre-building assets on the runner, SSH key pinning, environment protections, and revision isolation. This skill handles those parts as one reviewed workflow while keeping the live deployment behind a separate authorization step.
 
 ## Use when
 
 - A Composer-based TYPO3 project needs a new Deployer 8 recipe.
 - `composer.json`, `composer.lock`, or `vendor/bin/dep` still reports Deployer 7 and the project must move to v8 without resetting its releases.
+- An existing CI/CD deployment pipeline (GitHub Actions, GitLab CI, Bitbucket Pipelines) using Deployer 7 needs to be upgraded to Deployer 8.
 - A repository needs a GitHub Actions workflow that invokes `vendor/bin/dep` against staging or production.
 - An existing Deployer 8 setup needs its TYPO3 shared paths, SSH handling, workflow controls, or validation repaired.
 
@@ -17,10 +18,10 @@ Do not use this skill for TYPO3 core upgrades, general server provisioning, Kube
 
 ## Expected outputs
 
-- A Deployer state report with the installed, locked, and constrained versions.
+- A Deployer state report with the installed, locked, and constrained versions, as well as recipe and CI/CD pipeline findings.
 - Updated `composer.json` and `composer.lock` resolving `deployer/deployer:^8.0` when an upgrade is requested.
 - A reviewed `deploy.php` based on `recipe/typo3.php` and Deployer 8 configuration names.
-- `.github/workflows/deploy-typo3.yml` plus `.github/scripts/configure-deployer-ssh.sh` when CI deployment is requested.
+- An upgraded or newly created CI/CD deployment pipeline (e.g. `.github/workflows/deploy-typo3.yml` plus `.github/scripts/configure-deployer-ssh.sh`) configured with PHP 8.3, `local_archive`, and pinned SSH authentication.
 - A list of required GitHub environment secrets and variables. Secret values never appear in committed files.
 - Validation evidence. A live deployment occurs only when the user separately asks for it.
 
@@ -46,6 +47,7 @@ The included GitHub workflow expects `configure-ci-ssh.sh` to be copied into the
 
 - "Set up Deployer 8 for this TYPO3 project. Keep `.env` and `public/fileadmin` shared, add a production host, and validate the recipe without deploying."
 - "This project has `deployer/deployer` 7.4 in `require-dev`. Upgrade it in place to Deployer 8, migrate the custom `run()` calls, and preserve the current release layout."
+- "Our GitHub Actions workflow deploys with Deployer 7 and runs `dep self-update` on PHP 8.1. Upgrade both the recipe and the CI pipeline to Deployer 8 using local_archive."
 - "Add a manual GitHub Action that deploys this TYPO3 project to production with Deployer 8. Use environment secrets, a pinned SSH host key, and a protected production environment."
 - "Audit our Deployer 8 workflow. Check that CI deploys the checked-out commit and cannot run two production releases at once."
 
@@ -90,13 +92,15 @@ For a project configured by the skill, also run the validation commands in `SKIL
 ## Primary references
 
 - [Deployer 8 getting started](https://deployer.org/docs/8.x/getting-started)
+- [Deployer v8 release announcement and features](https://deployer.org/blog/deployer-v8)
+- [Deployer 8 upgrade guide](https://deployer.org/docs/8.x/UPGRADE)
 - [Deployer 8 TYPO3 recipe](https://deployer.org/docs/8.x/recipe/typo3)
 - [Deployer 7 to 8 upgrade guide](https://github.com/deployphp/deployer/blob/master/docs/UPGRADE.md)
 - [GitHub Actions deployment environments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments)
 - [GitHub Actions secrets](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
 - [GitHub Actions secure use](https://docs.github.com/en/actions/reference/security/secure-use)
 
-Sources were checked on 2026-08-25.
+Sources were checked on 2026-09-24.
 
 ## License
 

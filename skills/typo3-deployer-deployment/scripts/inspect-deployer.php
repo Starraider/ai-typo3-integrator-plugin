@@ -8,8 +8,9 @@ function usage(): void
     fwrite(STDOUT, <<<'TXT'
 Usage: inspect-deployer.php [--project-root PATH] [--format text|json]
 
-Read composer.json, composer.lock, the local Deployer binary, and root-level
-Deployer recipes. The script does not modify files or contact a server.
+Read composer.json, composer.lock, the local Deployer binary, root-level
+Deployer recipes, and CI/CD deployment pipelines. The script does not modify
+files or contact a server.
 
 Exit codes:
   0  inspection completed
@@ -188,6 +189,85 @@ function scanRecipe(string $path): array
     return $findings;
 }
 
+function scanPipeline(string $path): array
+{
+    $patterns = [
+        [
+            'id' => 'pipeline-php-below-83',
+            'severity' => 'high',
+            'regex' => '/\bphp-version:\s*[\'\"]?(?:7\.[0-9]|8\.[0-2])\b/',
+            'message' => 'Deployer 8 requires PHP 8.3 or later on CI runners. Update PHP version to 8.3+.',
+        ],
+        [
+            'id' => 'pipeline-docker-php-below-83',
+            'severity' => 'high',
+            'regex' => '/\bimage:\s*[\'\"]?php:(?:7\.[0-9]|8\.[0-2])\b/',
+            'message' => 'Deployer 8 requires PHP 8.3 or later in CI containers. Update image to php:8.3 or newer.',
+        ],
+        [
+            'id' => 'pipeline-self-update',
+            'severity' => 'high',
+            'regex' => '/\b(?:dep|deployer)\s+(?:self-update|selfupdate)\b/i',
+            'message' => 'Deployer 8 removed self-update. Remove this step and manage Deployer via Composer.',
+        ],
+        [
+            'id' => 'pipeline-global-deployer-phar',
+            'severity' => 'high',
+            'regex' => '/(?:deployer\.org\/(?:deployer|downloads\/v[0-7])|curl[^\n]*deployer\.phar)/i',
+            'message' => 'Avoid downloading unversioned global deployer.phar in CI; use project-local vendor/bin/dep from composer.lock.',
+        ],
+        [
+            'id' => 'pipeline-insecure-ssh',
+            'severity' => 'high',
+            'regex' => '/(?:StrictHostKeyChecking=(?:no|off)\b|ssh-keyscan\b[^\n]*>>\s*~?\/?\.ssh\/known_hosts)/i',
+            'message' => 'Do not disable StrictHostKeyChecking or append unverified ssh-keyscan in CI. Use preverified DEPLOY_KNOWN_HOSTS.',
+        ],
+        [
+            'id' => 'pipeline-legacy-deploy-call',
+            'severity' => 'info',
+            'regex' => '/\bdep\s+deploy\b[^\n]*(?:-o\s+|stage=)/',
+            'message' => 'Review Deployer 7 CLI flags in CI. In Deployer 8, use host alias or label selector with vendor/bin/dep.',
+        ],
+        [
+            'id' => 'pipeline-dep-version-constraint',
+            'severity' => 'high',
+            'regex' => '/\bcomposer\s+require[^\n]*deployer\/deployer:[^8\n]*/',
+            'message' => 'CI pipeline requires older Deployer version. Update constraint to deployer/deployer:^8.0.',
+        ],
+    ];
+
+    $lines = @file($path, FILE_IGNORE_NEW_LINES);
+    if ($lines === false) {
+        return [[
+            'id' => 'unreadable-pipeline',
+            'severity' => 'high',
+            'message' => "Cannot read pipeline {$path}.",
+            'lines' => [],
+        ]];
+    }
+
+    $findings = [];
+    foreach ($patterns as $pattern) {
+        $matchedLines = [];
+        foreach ($lines as $index => $line) {
+            if (preg_match($pattern['regex'], $line) === 1) {
+                $matchedLines[] = $index + 1;
+            }
+        }
+
+        if ($matchedLines !== []) {
+            $findings[] = [
+                'id' => $pattern['id'],
+                'severity' => $pattern['severity'],
+                'message' => $pattern['message'],
+                'lines' => $matchedLines,
+            ];
+        }
+    }
+
+    return $findings;
+}
+
 $projectRoot = getcwd() ?: '.';
 $format = 'text';
 
@@ -299,6 +379,39 @@ foreach ($recipePaths as $relativePath) {
     }
 }
 
+$pipelinePaths = [];
+$candidatePipelines = array_merge(
+    glob($resolvedRoot . '/.github/workflows/*.yml') ?: [],
+    glob($resolvedRoot . '/.github/workflows/*.yaml') ?: []
+);
+foreach (['.gitlab-ci.yml', 'bitbucket-pipelines.yml', '.circleci/config.yml'] as $singleCi) {
+    $singleCiPath = $resolvedRoot . '/' . $singleCi;
+    if (is_file($singleCiPath)) {
+        $candidatePipelines[] = $singleCiPath;
+    }
+}
+
+foreach ($candidatePipelines as $candidate) {
+    $content = @file_get_contents($candidate);
+    if ($content !== false && (
+        stripos($content, 'dep ') !== false
+        || stripos($content, 'deployer') !== false
+        || stripos($content, 'deploy.php') !== false
+        || stripos($content, 'vendor/bin/dep') !== false
+    )) {
+        $relativePath = ltrim(substr($candidate, strlen($resolvedRoot)), '/');
+        $pipelinePaths[] = $relativePath;
+    }
+}
+sort($pipelinePaths);
+
+foreach ($pipelinePaths as $relativePath) {
+    foreach (scanPipeline($resolvedRoot . '/' . $relativePath) as $finding) {
+        $finding['file'] = $relativePath;
+        $findings[] = $finding;
+    }
+}
+
 $highCount = count(array_filter($findings, static fn (array $finding): bool => $finding['severity'] === 'high'));
 $infoCount = count($findings) - $highCount;
 
@@ -317,6 +430,7 @@ $report = [
         'evidence_majors' => $majors,
     ],
     'recipes' => $recipePaths,
+    'pipelines' => $pipelinePaths,
     'findings' => $findings,
     'summary' => [
         'high' => $highCount,
@@ -337,6 +451,7 @@ fwrite(STDOUT, "Constraint: " . ($constraint ?? 'none') . ($constraintSection !=
 fwrite(STDOUT, "Locked: " . ($lockedVersion ?? 'none') . PHP_EOL);
 fwrite(STDOUT, "Binary: " . ($binaryVersion ?? 'none') . PHP_EOL);
 fwrite(STDOUT, "Recipes: " . ($recipePaths === [] ? 'none' : implode(', ', $recipePaths)) . PHP_EOL);
+fwrite(STDOUT, "Pipelines: " . ($pipelinePaths === [] ? 'none' : implode(', ', $pipelinePaths)) . PHP_EOL);
 fwrite(STDOUT, "Findings: {$highCount} high, {$infoCount} info" . PHP_EOL);
 foreach ($findings as $finding) {
     $lineList = implode(',', $finding['lines']);

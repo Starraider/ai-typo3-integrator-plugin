@@ -64,6 +64,27 @@
         "Empty shared_dirs and writable_dirs are compared with v8 TYPO3 defaults rather than silently preserved or replaced",
         "No SSH connection or Deployer deploy task runs"
       ]
+    },
+    {
+      "id": 5,
+      "kind": "representative",
+      "prompt": "Upgrade our existing Deployer v7 deployment pipeline and recipe to Deployer 8. The workflow in .github/workflows/deploy.yml currently runs setup-php with php-version 8.1, executes dep self-update, disables host key checking, and relies on the remote server cloning Git. Update the workflow and recipe to Deployer 8 best practices using local_archive without deploying.",
+      "expected_output": "An upgraded Deployer 8 recipe and GitHub Actions workflow configured with PHP 8.3, local_archive, vendor/bin/dep, pre-built assets, and strict SSH key verification.",
+      "files": [
+        "composer.json",
+        "composer.lock",
+        "deploy.php",
+        ".github/workflows/deploy.yml"
+      ],
+      "expectations": [
+        "The runner PHP version in setup-php is updated to 8.3 or later",
+        "dep self-update and unversioned phar downloads are removed in favor of vendor/bin/dep",
+        "The recipe configures update_code_strategy with local_archive for CI deployments",
+        "Frontend or release asset compilation runs on the runner before Deployer deploys",
+        "StrictHostKeyChecking=no is replaced with verified known_hosts host authentication",
+        "composer.json resolves deployer/deployer:^8.0",
+        "No remote deployment or workflow dispatch is triggered"
+      ]
     }
   ]
 }

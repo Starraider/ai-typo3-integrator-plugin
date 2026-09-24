@@ -36,6 +36,21 @@ create_v7_fixture() {
     "task('legacy', function (): void {" \
     "    run('sync', ['timeout' => 5, 'no_throw' => true]);" \
     '});' > "$target/deploy.php"
+  mkdir -p "$target/.github/workflows"
+  printf '%s\n' \
+    'name: Deploy' \
+    'on: [push]' \
+    'jobs:' \
+    '  deploy:' \
+    '    runs-on: ubuntu-latest' \
+    '    steps:' \
+    '      - uses: actions/checkout@v3' \
+    '      - uses: shivammathur/setup-php@v2' \
+    '        with:' \
+    '          php-version: "8.1"' \
+    '      - run: curl -LO https://deployer.org/deployer.phar' \
+    '      - run: dep self-update' \
+    '      - run: dep deploy production -o StrictHostKeyChecking=no' > "$target/.github/workflows/deploy.yml"
 }
 
 fixture="$fixture_root/project"
@@ -45,6 +60,10 @@ inspection="$(php "$script_dir/inspect-deployer.php" --project-root "$fixture" -
 grep -q '"state": "v7"' <<<"$inspection" || fail 'inspector did not detect v7'
 grep -q '"id": "run-options-array"' <<<"$inspection" || fail 'inspector missed run options array'
 grep -q '"id": "typo3-webroot-v7"' <<<"$inspection" || fail 'inspector missed typo3_webroot'
+grep -q '"id": "pipeline-php-below-83"' <<<"$inspection" || fail 'inspector missed pipeline php version'
+grep -q '"id": "pipeline-self-update"' <<<"$inspection" || fail 'inspector missed pipeline self-update'
+grep -q '"id": "pipeline-global-deployer-phar"' <<<"$inspection" || fail 'inspector missed pipeline global phar'
+grep -q '"id": "pipeline-insecure-ssh"' <<<"$inspection" || fail 'inspector missed pipeline insecure ssh'
 
 fake_composer="$fixture_root/fake-composer"
 # shellcheck disable=SC2016
