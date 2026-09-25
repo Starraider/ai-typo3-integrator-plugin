@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/Starraider/ai-typo3-integrator-plugin/compare/v1.0.0...v1.1.0) (2026-09-25)
+
+
+### Features
+
+* Add typo3-ddev-vite skill. ([5806621](https://github.com/Starraider/ai-typo3-integrator-plugin/commit/5806621136ac14424cd5363e4fa7a5eab0e7b598))
+
 ## 1.0.0 (2026-09-24)
 
 
