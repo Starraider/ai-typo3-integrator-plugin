@@ -1,0 +1,9 @@
+---
+interface:
+  display_name: "TYPO3 Vite (DDEV)"
+  short_description: "Integrate and repair Vite SCSS/JS in TYPO3 DDEV"
+  default_prompt: >-
+    Use $typo3-ddev-vite to integrate, maintain, or troubleshoot Vite-based
+    SCSS and JavaScript in a TYPO3 site package running in DDEV.
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,41 @@
+{
+  "skill_name": "typo3-ddev-vite",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "representative",
+      "prompt": "Add Vite to our DDEV TYPO3 project. The site package is packages/acme_site, uses fluid_styled_content, and needs Main.entry.js to compile Main.scss and application JavaScript.",
+      "expected_output": "A read-first, permission-gated plan that installs Vite AssetCollector, Vite, vite-plugin-typo3, Sass, and the DDEV sidecar; creates the root Vite config and site-package entrypoint contract; and verifies development plus production modes.",
+      "files": [],
+      "expectations": [
+        "The response places package.json and vite.config.js at the project root and Configuration/ViteEntrypoints.json inside the site package.",
+        "The entrypoint imports SCSS and the Fluid asset path uses the actual extension key.",
+        "The verification distinguishes the running Development sidecar from a production build with the dev server stopped."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "edge-case",
+      "prompt": "Our Bootstrap Package site has an existing vite.config.js and ddev-vite-sidecar. Vite builds, but the page links to localhost:5173 and styles are missing. Diagnose and repair only the demonstrated defect.",
+      "expected_output": "An evidence-led diagnosis that checks TYPO3 Development context, the sidecar server, rendered asset URLs, and stale AssetCollector dev-server configuration before proposing a minimal authorized repair.",
+      "files": [],
+      "expectations": [
+        "The response does not replace the existing Vite configuration or reinstall already working dependencies.",
+        "The response recognizes vite.<project>.ddev.site as the sidecar origin and flags a stale localhost devServerUri as a potential cause.",
+        "The response treats Bootstrap Package as compatible with the same Vite and Fluid integration path."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "near-miss",
+      "prompt": "Create a Site Set and override the Text content-element template for a TYPO3 site package that has no frontend build requirement.",
+      "expected_output": "A handoff to typo3-sitepackage and related TYPO3 configuration skills rather than an unnecessary Vite installation.",
+      "files": [],
+      "expectations": [
+        "The response identifies that no SCSS, JavaScript, Vite, or DDEV asset-build task is requested.",
+        "The response points to typo3-sitepackage for the requested work.",
+        "The response does not propose Node dependencies, DDEV add-ons, or Vite configuration."
+      ]
+    }
+  ]
+}
