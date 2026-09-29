@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/Starraider/ai-typo3-integrator-plugin/compare/v1.0.0...v1.1.0) (2026-09-29)
+
+
+### Features
+
+* add TYPO3 StyleX skill ([d8ed725](https://github.com/Starraider/ai-typo3-integrator-plugin/commit/d8ed72548d9c98ec9091a13e3a7b0ba342fa46e5))
+* Add typo3-ddev-vite skill. ([5806621](https://github.com/Starraider/ai-typo3-integrator-plugin/commit/5806621136ac14424cd5363e4fa7a5eab0e7b598))
+
 ## 1.0.0 (2026-09-24)
 
 
