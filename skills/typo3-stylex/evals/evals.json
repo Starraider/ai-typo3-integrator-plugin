@@ -1,0 +1,29 @@
+{
+  "skill_name": "typo3-stylex",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "representative",
+      "prompt": "Install StyleX Connector with Vite in this new TYPO3 14 DDEV site and verify development and production delivery.",
+      "expected_output": "The TYPO3 page renders a generated StyleX class; development serves Vite and virtual CSS; production emits both manifests and loads physical CSS and JavaScript.",
+      "files": [],
+      "expectations": ["Both manifests exist and the StyleX manifest contains a Fluid key", "The Vite manifest entry lists CSS and the referenced files exist", "The page loads assets without the Vite server"]
+    },
+    {
+      "id": 2,
+      "kind": "edge-case",
+      "prompt": "Our Bootstrap Package and Fluid Styled Content site already uses Vite. Add StyleX without breaking the existing content templates.",
+      "expected_output": "Existing Vite and TYPO3 assets remain registered once; the connector integrates in selected templates and unlayered Bootstrap remains compatible.",
+      "files": [],
+      "expectations": ["Existing Vite plugins remain", "StyleX uses useCSSLayers: false for unlayered Bootstrap", "FSC data processing remains available", "Rendered CSS is checked for a representative component"]
+    },
+    {
+      "id": 3,
+      "kind": "near-miss",
+      "prompt": "Explain what StyleX atomic classes are; no project setup is requested.",
+      "expected_output": "The agent answers the concept question without invoking the installation workflow or changing project files.",
+      "files": [],
+      "expectations": ["No Composer, DDEV, Vite, or TYPO3 files are changed"]
+    }
+  ]
+}

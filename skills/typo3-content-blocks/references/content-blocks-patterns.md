@@ -131,12 +131,16 @@ When lint reports a path such as `/fields/3/fields/0`, walk the YAML object by a
 
 ## Templating Patterns
 
-Content Blocks provides separate frontend and backend preview templates:
+Content Blocks provides separate frontend and backend preview templates (**MUST be strictly lowercase**):
 
 ```text
-templates/frontend.fluid.html
-templates/backend-preview.fluid.html
+templates/frontend.html          # or frontend.fluid.html
+templates/backend-preview.html   # or backend-preview.fluid.html
 ```
+
+> **Warning — Strict Lowercase Filename Required:**
+> In Content Blocks, template filenames must be all lowercase. Using PascalCase (`Frontend.html`) breaks on Linux/Docker environments because `file_exists()` fails to locate the template, causing `tt_content.<typeName>` TypoScript generation to be skipped (`ERROR: Content Element with uid "..." and type "..." has no rendering definition!`).
+
 
 Use processed fields on `{data}`:
 

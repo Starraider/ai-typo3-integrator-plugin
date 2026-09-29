@@ -5,7 +5,7 @@ This collection of portable, reusable Skills complies with the [Agent Plugin 1.0
 ## Package contract
 
 - **Plugin:** `ai-typo3-integrator-plugin` (`plugin.json`, schema 1.0.0)
-- **Portable components:** 24 immediate-child [Agent Skills](https://agentskills.io/specification) in `skills/`
+- **Portable components:** 25 immediate-child [Agent Skills](https://agentskills.io/specification) in `skills/`
 - **MCP servers:** none
 - **License:** CC-BY-4.0; see [LICENSE](LICENSE)
 
@@ -42,12 +42,13 @@ This collection of portable, reusable Skills complies with the [Agent Plugin 1.0
 | [typo3-secure-form](skills/typo3-secure-form/README.md) | Secure form setup with CAPTCHA, CSP, and anti-spam controls |
 | [typo3-site-sets](skills/typo3-site-sets/README.md) | Site configuration versus reusable Site Sets |
 | [typo3-sitepackage](skills/typo3-sitepackage/README.md) | Scaffold or extend a site package, file placement, template overrides, Bootstrap Package vs. fluid_styled_content |
+| [typo3-stylex](skills/typo3-stylex/README.md) | StyleX Connector installation and verification with Vite in DDEV |
 | [typo3-typoscript-conditions](skills/typo3-typoscript-conditions/README.md) | TYPO3 v14 frontend TypoScript conditions |
 | [typo3-xml-sitemap](skills/typo3-xml-sitemap/README.md) | EXT:seo XML sitemaps and route integration |
 
 ## Compatibility note
 
-Eighteen skills include optional `agents/openai.yaml` files for Codex presentation. Those files are source-client metadata, not portable Agent Plugins components, and are not declared in `plugin.json`. The remaining skills have no client-specific companion files.
+Nineteen skills include optional `agents/openai.yaml` files for Codex presentation. Those files are source-client metadata, not portable Agent Plugins components, and are not declared in `plugin.json`. The remaining skills have no client-specific companion files.
 
 Compatible clients discover the portable Skills from `skills/<skill-name>/SKILL.md`. Installation, trust, UI metadata, and client-specific activation are managed by each client.
 

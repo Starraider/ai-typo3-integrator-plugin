@@ -66,4 +66,4 @@ When a host-side agent cannot open a DDEV hostname, run Playwright inside DDEV a
 
 ## Maintainer evaluation
 
-Scenario coverage for this skill is recorded in [evals/evals.json](evals/evals.json). Run the validation commands in the README after editing this skill.
+Scenario coverage for this skill is recorded in `evals/evals.json` in the source checkout. Run the validation commands in the README after editing this skill.

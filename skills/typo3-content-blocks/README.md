@@ -32,7 +32,8 @@ Run the project's normal `content-blocks:lint`, extension setup, and cache-flush
 
 ## Related skills
 
-None in this plugin; use project-specific site-package guidance for broader TCA or extension architecture.
+- [TYPO3 StyleX](../typo3-stylex/README.md) for StyleX styles attached to a Content Block's Fluid template.
+- [TYPO3 Site Package](../typo3-sitepackage/README.md) for broader package structure and template overrides.
 
 ## License
 

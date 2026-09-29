@@ -70,4 +70,4 @@ Do not assume a host-side agent can reach `https://<project>.ddev.site`; it may 
 
 ## Maintainer evaluation
 
-Scenario coverage for this skill is recorded in [evals/evals.json](evals/evals.json). Run the validation commands in the README after editing this skill.
+Scenario coverage for this skill is recorded in `evals/evals.json` in the source checkout. Run the validation commands in the README after editing this skill.

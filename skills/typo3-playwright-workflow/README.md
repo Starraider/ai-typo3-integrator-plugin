@@ -51,7 +51,7 @@ From the plugin root, validate the portable structure with the `new-skill` valid
 skills-ref validate skills/typo3-playwright-workflow
 ```
 
-Then review the representative, edge-case, and near-miss scenarios in [evals/evals.json](evals/evals.json). A workflow run is successful only when it reports the focused test result and preserves the baseline-update boundary.
+Then review the representative, edge-case, and near-miss scenarios in `evals/evals.json` in the source checkout. A workflow run is successful only when it reports the focused test result and preserves the baseline-update boundary.
 
 ## Related skills
 

@@ -1,6 +1,6 @@
 ---
 name: typo3-ddev-vite
-description: Integrate, maintain, or troubleshoot Vite-built SCSS and JavaScript in a TYPO3 site package running in DDEV. Use when installing or repairing praetorius/vite-asset-collector, vite-plugin-typo3, Vite, or ddev-vite-sidecar; adding a root vite.config.js; declaring Configuration/ViteEntrypoints.json; wiring a Fluid vite:asset ViewHelper; or diagnosing missing assets, manifests, dev-server loading, and SCSS compilation. Supports both bk2k/bootstrap-package and typo3/cms-fluid-styled-content; use typo3-sitepackage for the broader package structure.
+description: Integrate, maintain, or troubleshoot Vite-built CSS, SCSS, or CSS-in-JS and JavaScript in a TYPO3 site package running in DDEV. Use when installing or repairing praetorius/vite-asset-collector, vite-plugin-typo3, Vite, or ddev-vite-sidecar; adding a root vite.config.js; declaring Configuration/ViteEntrypoints.json; wiring a Fluid vite:asset ViewHelper; or diagnosing missing assets, manifests, dev-server loading, and stylesheet compilation. Supports both bk2k/bootstrap-package and typo3/cms-fluid-styled-content; use typo3-stylex for skom/stylex-connector setup or repair.
 license: CC-BY-4.0
 compatibility: Requires a Composer-mode TYPO3 project with DDEV, a site package, and Node.js plus a supported package manager available in the DDEV web container. Dependency, DDEV add-on, configuration, source, and template changes require user authorization.
 ---
@@ -34,10 +34,14 @@ Run dependency commands from the discovered project root through DDEV. Use the e
 
 ```bash
 ddev composer require praetorius/vite-asset-collector
-ddev exec npm install --save-dev vite vite-plugin-typo3 sass-embedded
+# Base Vite setup (plain CSS, PostCSS, or CSS-in-JS):
+ddev exec npm install --save-dev vite vite-plugin-typo3
+
+# If using SCSS, also add sass-embedded:
+ddev exec npm install --save-dev sass-embedded
 ```
 
-For pnpm, Yarn, or Bun, use its equivalent development-dependency command rather than adding npm alongside it. `sass-embedded` is required for SCSS; do not add it when the package already provides a working Sass implementation. Keep Node dependencies at the project root, beside Composer dependencies, unless existing project evidence establishes a different frontend root.
+For pnpm, Yarn, or Bun, use its equivalent development-dependency command rather than adding npm alongside it. Only install `sass-embedded` when the project specifically uses SCSS; projects using standard CSS custom properties, PostCSS, or CSS-in-JS (e.g. StyleX) do not require Sass. Keep Node dependencies at the project root, beside Composer dependencies, unless existing project evidence establishes a different frontend root.
 
 Install the sidecar only when it is absent:
 
@@ -74,12 +78,18 @@ Declare the site package’s sources in `<site-package>/Configuration/ViteEntryp
 
 ```js
 // Resources/Private/JavaScript/Main.entry.js
-import "../Styles/Main.scss";
+// 1. Primary stylesheet or design token / component styles
+import "../Styles/Main.scss"; // or "../CSS/main.css", or StyleX tokens/components
 
-// Application JavaScript starts here.
+// 2. Scoped Rich Text (RTE / CKEditor) and base frame styling
+import "../CSS/rte.css";
+
+// 3. Application JavaScript starts here.
 ```
 
-Keep imported SCSS and JavaScript private source files. Let the Vite plugin choose its compatible default output and manifest locations unless project evidence requires an explicit `build.outDir` or manifest setting. If custom locations are necessary, update the AssetCollector manifest configuration and Vite output together; they are one contract.
+Keep imported stylesheets and JavaScript private source files. When decoupling from legacy CSS (such as omitting `typo3/fluid-styled-content-css`), user-generated CKEditor markup (`.ce-bodytext`, `<p>`, `<a>`, `<ul>`) and standard content frames (`.frame`, `.frame-space-before-*`) have no runtime styling. Include a scoped base stylesheet (`rte.css` or `base.css`) in the entrypoint referencing design tokens (or CSS custom properties) so rich text and frame spacing render properly without legacy `typo3temp` CSS.
+
+Let the Vite plugin choose its compatible default output and manifest locations unless project evidence requires an explicit `build.outDir` or manifest setting. If custom locations are necessary, update the AssetCollector manifest configuration and Vite output together; they are one contract.
 
 Completion: the root config loads `typo3()`, the JSON is valid and discovers the entrypoint, and each imported source path resolves from its importing file.
 
@@ -98,7 +108,7 @@ In the site’s actual page layout, add the AssetCollector Fluid namespace and o
 </html>
 ```
 
-Replace `my_site_package` with the real extension key. Keep Bootstrap Package or `fluid_styled_content` rendering in place; only remove a legacy asset inclusion after proving the Vite bundle covers it. The ViewHelper emits development-server assets in Development context and manifest-backed assets after a production build.
+Replace `my_site_package` with the real extension key. Keep Bootstrap Package or `fluid_styled_content` rendering in place. For `fluid_styled_content`, legacy CSS can be cleanly eliminated by omitting `typo3/fluid-styled-content-css` from your Site Set dependencies while retaining `typo3/fluid-styled-content`. Only remove legacy asset inclusions after proving the Vite bundle (and your scoped `rte.css`) covers all content elements. The ViewHelper emits development-server assets in Development context and manifest-backed assets after a production build.
 
 Completion: exactly one layout on the rendered page registers the selected entrypoint and no duplicate stylesheet or script tag is produced.
 
@@ -110,7 +120,7 @@ Start the server in the frontend root and keep it running in the foreground:
 ddev vite
 ```
 
-Use the public `https://<project>.ddev.site` page, with TYPO3 in Development context. Confirm it loads assets from the `https://vite.<project>.ddev.site` origin, a small SCSS change is reflected, and browser console/network output is clean. The AssetCollector and sidecar auto-detect the DDEV development server; avoid a fixed localhost `devServerUri` in this setup.
+Use the public `https://<project>.ddev.site` page, with TYPO3 in Development context. Confirm it loads assets from the `https://vite.<project>.ddev.site` origin, a small style change (CSS/SCSS) is reflected, and browser console/network output is clean. The AssetCollector and sidecar auto-detect the DDEV development server; avoid a fixed localhost `devServerUri` in this setup.
 
 Then stop the server and verify the production artifact path:
 
@@ -120,12 +130,14 @@ ddev vite build
 
 Confirm a manifest and generated assets exist at the configured/default location, clear TYPO3 caches if template or TypoScript configuration changed, and load the page without the dev server. Keep the build command in the deployment pipeline when the project needs production assets; do not assume development-sidecar output reaches production.
 
-Completion: one SCSS change and one JavaScript change are served in development, and a no-dev-server production-style page resolves the built manifest without 404s.
+Completion: one style change (CSS/SCSS) and one JavaScript change are served in development, and a no-dev-server production-style page resolves the built manifest without 404s.
 
 ## Troubleshooting branches
 
 Load [diagnostics](references/diagnostics.md) when the pipeline is already installed, a build/dev request fails, styles do not update, output is missing, or a browser reports connection/CORS/manifest problems. It supplies evidence-led checks for the usual failure boundaries.
 
+For `skom/stylex-connector` installation, its class manifest, or `/virtual:stylex.css`, use the sibling `typo3-stylex` skill. Keep this skill for the underlying Vite pipeline.
+
 ## Maintainer evaluation
 
-Scenario coverage is recorded in [evals/evals.json](evals/evals.json). Run the validation commands in the README after editing this skill.
+Scenario coverage is recorded in `evals/evals.json` in the source checkout. Run the validation commands in the README after editing this skill.

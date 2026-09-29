@@ -43,11 +43,18 @@ assets/icon.svg
 assets/frontend.css
 assets/frontend.js
 language/labels.xlf
-templates/frontend.fluid.html
-templates/backend-preview.fluid.html
+templates/frontend.html          # or frontend.fluid.html (MUST be strictly lowercase)
+templates/backend-preview.html   # or backend-preview.fluid.html (MUST be strictly lowercase)
 templates/partials/*
 templates/layouts/*
 ```
+
+> [!CRITICAL]
+> **Template Naming & Case Sensitivity:**
+> Content Blocks strictly expects lowercase filenames: `frontend.html` / `frontend.fluid.html` and `backend-preview.html` / `backend-preview.fluid.html`.
+> Unlike classic TYPO3 Fluid elements which often use PascalCase (e.g. `Frontend.html`), Content Blocks checks for lowercase template names on disk via `file_exists()`. On case-sensitive Linux/Docker hosts (such as DDEV), a capitalized filename like `Frontend.html` will fail this check silently. As a result, the TypoScript generator skips registering `tt_content.<typeName> =< lib.contentBlock`, producing:
+> `ERROR: Content Element with uid "X" and type "..." has no rendering definition!`.
+
 
 ## Creation Workflow
 
@@ -91,6 +98,7 @@ Start with the observable symptom, then narrow the layer:
 - **Relations not rendering:** remember that `Collection`, `Select`, `Relation`, `File`, `Folder`, `Category`, and `FlexForm` fields are resolved automatically in Content Block templates.
 - **Assets missing:** check `assets/`, published assets, and `cb:assetPath()` usage in Fluid.
 - **Labels show identifiers:** add/update `language/labels.xlf`; for places where Content Blocks cannot centralize labels, use a TCA override for a default column label.
+- **No rendering definition error (`ERROR: Content Element with uid "..." and type "..." has no rendering definition!`):** check the template filename case! The template file MUST be lowercase `templates/frontend.html` (or `frontend.fluid.html`). On case-sensitive environments (Linux/Docker/DDEV), a PascalCase file like `Frontend.html` fails `TypoScriptGenerator`'s internal `file_exists()` check, silently omitting `tt_content.<typeName> =< lib.contentBlock`. Rename the file to lowercase and flush the system cache (`ddev typo3 cache:flush -g system`).
 - **Database row too large:** reduce generated columns, use relations/collections where appropriate, or revisit field prefixing and duplicated basics.
 
 ## Fluid Notes

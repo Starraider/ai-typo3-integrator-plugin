@@ -55,7 +55,7 @@ From the plugin root, validate the portable structure with the `new-skill` valid
 skills-ref validate skills/typo3-playwright-ddev
 ```
 
-Then review the representative, edge-case, and near-miss scenarios in [evals/evals.json](evals/evals.json). A live setup is complete only when a focused test executes inside DDEV and failure artifacts are present.
+Then review the representative, edge-case, and near-miss scenarios in `evals/evals.json` in the source checkout. A live setup is complete only when a focused test executes inside DDEV and failure artifacts are present.
 
 ## Related skills
 

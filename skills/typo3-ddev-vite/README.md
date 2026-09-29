@@ -2,23 +2,23 @@
 
 ## What this skill solves
 
-This skill establishes, maintains, and diagnoses the complete Vite frontend-asset path for a TYPO3 site package in DDEV: Vite AssetCollector, `vite-plugin-typo3`, the Vite configuration, DDEV sidecar, entrypoint declaration, SCSS and JavaScript sources, Fluid output, and production build verification.
+This skill establishes, maintains, and diagnoses the complete Vite frontend-asset path for a TYPO3 site package in DDEV: Vite AssetCollector, `vite-plugin-typo3`, the Vite configuration, DDEV sidecar, entrypoint declaration, stylesheet (CSS, SCSS, or CSS-in-JS) and JavaScript sources, Fluid output, and production build verification.
 
 It deliberately treats Bootstrap Package and `fluid_styled_content` as equivalent at the Vite boundary. The selected package still owns content rendering; Vite owns the site package’s compiled frontend assets.
 
 ## Use when
 
-- A TYPO3 DDEV site package needs its first Vite-based SCSS and JavaScript bundle.
+- A TYPO3 DDEV site package needs its first Vite-based stylesheet (CSS, SCSS, or CSS-in-JS) and JavaScript bundle.
 - `vite-asset-collector`, `vite-plugin-typo3`, Vite, Sass, or `ddev-vite-sidecar` is absent or misconfigured.
 - `Configuration/ViteEntrypoints.json`, a Vite entrypoint, or the Fluid `<vite:asset>` tag is missing or not being collected.
-- Development assets, manifests, SCSS compilation, sidecar access, or production builds fail.
+- Development assets, manifests, stylesheet/SCSS compilation, sidecar access, or production builds fail.
 
 Use [TYPO3 Site Package](../typo3-sitepackage/README.md) for broader site-package scaffolding, rendering-package selection, Site Sets, and template architecture. Use [TYPO3 Playwright Workflow](../typo3-playwright-workflow/README.md) for routine browser verification after this pipeline works.
 
 ## Expected outputs
 
 - A root Vite config using `vite-plugin-typo3`.
-- A site-package `Configuration/ViteEntrypoints.json`, one JavaScript entrypoint, and SCSS imported from it.
+- A site-package `Configuration/ViteEntrypoints.json`, one JavaScript entrypoint, and the project's chosen stylesheet source imported from it.
 - One Fluid `vite:asset` registration in the actual rendered page layout.
 - A DDEV sidecar command path and a verified production build path.
 - An evidence-based diagnosis for a broken existing setup, without replacing configuration that already works.
@@ -55,7 +55,7 @@ From the plugin root, validate the portable structure and then inspect the scena
 skills-ref validate skills/typo3-ddev-vite
 ```
 
-A live integration is complete only when the DDEV sidecar serves a changed SCSS and JavaScript source in Development context, and `ddev vite build` produces assets that load through the configured manifest with the dev server stopped.
+A live integration is complete only when the DDEV sidecar serves a changed stylesheet and JavaScript source in Development context, and `ddev vite build` produces assets that load through the configured manifest with the dev server stopped.
 
 ## Sources
 
@@ -66,6 +66,7 @@ A live integration is complete only when the DDEV sidecar serves a changed SCSS 
 
 ## Related skills
 
+- [TYPO3 StyleX](../typo3-stylex/README.md) for `skom/stylex-connector`, its Fluid class lookup, and StyleX CSS delivery.
 - [TYPO3 Site Package](../typo3-sitepackage/README.md) for package layout, Site Sets, and Bootstrap Package versus `fluid_styled_content`.
 - [TYPO3 Fluid Patterns](../typo3-fluid-patterns/README.md) for rendering layouts and frontend interaction patterns.
 - [TYPO3 Playwright DDEV Setup](../typo3-playwright-ddev/README.md) for adding browser-test infrastructure.
