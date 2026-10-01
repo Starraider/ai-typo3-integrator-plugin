@@ -53,3 +53,17 @@ project-specific evidence, not universal defaults.
   plugins, TypoScript defaults, and variant patterns.
 - [references/template-patterns.md](references/template-patterns.md) —
   site-package overrides, SEO ViewHelpers, FAL images, and partial patterns.
+- [references/workflow-details.md](references/workflow-details.md) —
+  installation and maintenance commands, configuration placement, settings
+  meaning, variant use cases, search routing, build/cache, VRT, and common
+  mistakes.
+
+## Related Skills
+
+- `typo3-xml-sitemap` — News records in `/sitemap.xml` (the provider class
+  shipped by the installed News version, Google News sitemap,
+  multi-language).
+- `typo3-route-enhancers` — speaking URLs for News detail pages
+  (`PersistedAliasMapper` on `path_segment`, not `slug`).
+- `typo3-site-sets` — Site Set conventions, including any sitemap set shipped
+  by the installed News version.
