@@ -4,6 +4,8 @@ Use this reference after identifying the actual form stack and installed
 CAPTCHA provider. It deliberately does not prescribe provider option names:
 those vary by `evoweb/recaptcha` and TYPO3 version and must be confirmed from
 the installed package or its current documentation.
+For concrete `evoweb/recaptcha` snippets to verify against the installed
+version, see [provider-examples.md](provider-examples.md).
 
 ## 1. Decide the control boundary
 

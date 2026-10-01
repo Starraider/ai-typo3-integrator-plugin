@@ -49,3 +49,12 @@ Read [references/form-security-guide.md](references/form-security-guide.md) for
 the provider-neutral configuration boundary, CSP workflow, verification matrix,
 and troubleshooting guidance. Use the installed provider's current
 documentation for exact option names and template markup.
+
+Read [references/provider-examples.md](references/provider-examples.md) for
+concrete `evoweb/recaptcha` starting points: Site Set dependencies, runtime
+keys, reCAPTCHA Enterprise migration notes, EXT:form and `sf_register`
+snippets, Google CSP sources, and provider-specific troubleshooting. Verify
+each identifier against the installed version before use.
+
+Related skills: `typo3-form-yaml` (form setup and templates), `typo3-csp`
+(policy rollout), `typo3-frontend-registration` (`bw_captcha` approval flow).
