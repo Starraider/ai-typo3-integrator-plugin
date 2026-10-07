@@ -13,7 +13,7 @@ Use this repeatable execution loop after frontend implementation. It verifies th
 
 Inspect the changed frontend files, the relevant existing tests, the site-package directory, and the configured Playwright projects. Identify the expected page URL and the smallest test that covers the changed area.
 
-- For editor-mounted content elements or plugins, require the real mounted URL. Do not guess route paths, `cHash` values, or plugin URLs.
+- For editor-mounted content elements or plugins, require the real mounted URL. Do not guess route paths, `cHash` values, or plugin URLs. If the page is not mounted yet, implementation may continue, but final verification pauses until the URL is known. Pass such URLs through environment variables (see [VRT patterns](references/vrt-patterns.md)).
 - If the setup, browser runtime, or configuration is absent or failing before tests start, switch to `typo3-playwright-ddev`.
 - Extend an existing test that already owns the page area instead of creating duplicate coverage.
 

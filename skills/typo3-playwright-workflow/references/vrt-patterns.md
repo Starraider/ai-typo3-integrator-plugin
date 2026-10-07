@@ -11,6 +11,13 @@ ddev exec "cd packages/[theme-name] && npx playwright test Tests/e2e/<file>.spec
 
 # Single project
 ddev exec "cd packages/[theme-name] && npx playwright test Tests/e2e/<file>.spec.ts --project=chromium"
+
+# VRT only, per browser (fast iteration)
+ddev exec "cd packages/[theme-name] && npx playwright test Tests/e2e/<file>.spec.ts --project=chromium --grep @stitch-vrt"
+ddev exec "cd packages/[theme-name] && npx playwright test Tests/e2e/<file>.spec.ts --project=firefox --grep @stitch-vrt"
+
+# Update snapshots for one project only (after reviewing the change)
+ddev exec "cd packages/[theme-name] && npx playwright test Tests/e2e/<file>.spec.ts --update-snapshots --project=chromium"
 ```
 
 ## Section-Level VRT Pattern

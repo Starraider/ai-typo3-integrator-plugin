@@ -155,3 +155,10 @@ Read [references/container-patterns.md](references/container-patterns.md) for
 Registry, TCA, TypoScript, Fluid, backend-preview, and troubleshooting patterns.
 Treat it as a starting pattern and reconcile it with the installed package
 before implementation.
+
+Read [references/container-guide.md](references/container-guide.md) for design
+rules, CSS framework detection and Tailwind class safelisting, the global
+stacking-breakpoint semantics, the `ContainerConfiguration` and
+`ContainerProcessor` options, PSR-14 events, per-column content-type
+restrictions (core v14.1+ vs. `content_defender`), and a symptom-based
+troubleshooting list.

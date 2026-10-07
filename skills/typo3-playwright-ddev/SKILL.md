@@ -35,7 +35,9 @@ Completion: the user has authorized the proposed writes, or the task remains rea
 
 ## 3. Implement the smallest compatible setup
 
-Work from the site-package directory inside DDEV. Prefer the project's package manager; if none exists, initialize it only with permission. Install `@playwright/test` and `@axe-core/playwright` as development dependencies when absent.
+Work from the site-package directory inside DDEV. Prefer the project's package manager; if none exists, initialize it only with permission (for npm: `ddev npm init -y`). Install `@playwright/test` and `@axe-core/playwright` as development dependencies when absent.
+
+Browser binaries belong inside the DDEV container, never on the host; installing them on the host causes host/container mismatches.
 
 For persistent container browser support, install and restart the DDEV Playwright add-on:
 
@@ -52,7 +54,17 @@ ddev exec --dir packages/<theme-name> npx playwright test
 
 Create or amend configuration rather than replacing it. The configuration must use the public DDEV URL, tolerate the local HTTPS certificate when required, retain useful failure artifacts, and declare only browser projects the container supports. Start from [the DDEV configuration asset](assets/playwright.config.ts) and load [configuration guidance](references/playwright-config.md) when adapting an existing setup.
 
-Create a test layout only when the project has none. Keep it consistent with `testDir`; use [test patterns](references/test-patterns.md) for a smoke test, locator-based visual test, accessibility test, and browser coverage.
+Create a test layout only when the project has none. Keep it consistent with `testDir`; use [test patterns](references/test-patterns.md) for a smoke test, locator-based visual test, accessibility test, and browser coverage. A proven default layout is:
+
+```text
+Tests/
+├── e2e/
+├── Visual/
+├── Accessibility/
+└── CrossBrowser/
+```
+
+Wire `test`, `test:visual`, and `test:visual:update` package scripts as shown in [configuration guidance](references/playwright-config.md) so future verification has a stable command path.
 
 Completion: dependencies, browser runtime, configuration, and command path agree with the actual package layout.
 
@@ -63,6 +75,23 @@ Run a focused smoke test first, then list or run the suite inside DDEV. Confirm 
 Generate initial snapshots only after the tested URLs and viewports are known and the user has authorized baseline writes. Review each captured page before accepting it as the legacy or approved baseline. Do not use `--update-snapshots` merely to make a failing test pass.
 
 Completion: at least one test executes against the intended TYPO3 page, artifacts are available for failures, and any accepted baseline has been reviewed.
+
+## Environment repair checklist
+
+Use this skill (not `typo3-playwright-workflow`) when any of these are true:
+
+- Playwright is missing from `package.json`;
+- browsers are not installed in the container;
+- `playwright.config.ts` is missing or points to the wrong URL or `testDir`;
+- the self-signed DDEV certificate breaks navigation (`ignoreHTTPSErrors: true` missing);
+- tests fail because the browser/runtime environment is inconsistent;
+- reports, traces, or snapshots are not generated in the workspace.
+
+## DDEV-specific gotchas
+
+- Always run Playwright through DDEV; for tight iteration loops `ddev exec --dir packages/<theme-name> npx playwright test ...` is usually faster than the `ddev playwright` wrapper.
+- Set up the test environment in the first sprint or epic, not at the end; late setup creates avoidable friction under deadline pressure.
+- Never update snapshots blindly; every visual diff must be understood.
 
 ## Agent-environment constraint
 
