@@ -1,0 +1,110 @@
+{
+  "skill_name": "typo3-iconpack",
+  "evals": [
+    {
+      "id": 1,
+      "kind": "representative",
+      "prompt": "Install Quellenform Iconpack and Font Awesome in a TYPO3 13.4 DDEV Composer project. Use a site-package YAML override for backend webfonts and frontend SVG sprites, and include it through our existing site set.",
+      "expected_output": "Compatible constrained Composer commands, provider configuration and active site-set dependency with backend/frontend verification.",
+      "files": [],
+      "expectations": [
+        "Uses quellenform/t3x-iconpack and quellenform/t3x-iconpack-fontawesome with ddev composer and previews dependency changes.",
+        "Distinguishes package versions from bundled Font Awesome 7.1.0 and identifies iconpack_fontawesome/version=7 and pack fa7 for the baseline.",
+        "Uses provider configFile and iconpack.preferredRenderTypes backend/frontend native/rte; supplies both contexts for the replaced branch.",
+        "Explains provider self-registration and avoids duplicate PHP registration or a fictitious TypoScript iconPacks list.",
+        "Uses quellenform/iconpack as a set dependency and verifies final frontend parse-function loading order."
+      ]
+    },
+    {
+      "id": 2,
+      "kind": "representative",
+      "prompt": "Use installed fa7 house icons in our backend module, TCA content type, and a Fluid frontend plugin. We also need our own siteicons cloud SVG pack.",
+      "expected_output": "Separate Core icon registration and Iconpack custom-pack registration, TCA and Fluid rendering with correctly resolved assets.",
+      "files": [],
+      "expectations": [
+        "Registers the project-owned pack through IconpackRegistry::registerIconpack in ext_localconf.php and preserves its unique key.",
+        "Registers a Core identifier in Configuration/Icons.php pointing to a real provider SVG for backend module iconIdentifier and TCA typeicon_classes.",
+        "Does not pass fa7:solid,house as a Core identifier or invent a t3skin-icon mapping.",
+        "Uses the Iconpack namespace and iconfig argument in Fluid; additional styles go through additionalAttributes.",
+        "Provides source assets and matching icon/category entries for the custom pack.",
+        "Uses TYPO3 asset APIs or EXT paths and explains webfont CSS versus SVG sprite use references."
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "edge-case",
+      "prompt": "Our custom CKEditor 5 preset shows an Iconpack button but icons disappear after saving or are absent on the frontend. Fix it without disabling our existing HTML sanitizer.",
+      "expected_output": "Diagnoses editor, persistence, parse-function, sanitizer and assets separately and preserves filtering.",
+      "files": [],
+      "expectations": [
+        "Identifies the Iconpack import module/export/toolbar contract and avoids duplicate manual and automatic setup.",
+        "Inspects persisted data-iconfig placeholders, version-specific XCLASS/event listener and span attribute processing.",
+        "Checks lib.parseFunc_RTE.nonTypoTagUserFunc and normal f:format.html output rather than using f:format.raw as a fix.",
+        "Resolves competing sanitizer/XCLASS integration explicitly and does not broadly allow every SVG attribute or disable processing.",
+        "Requires insert/save/reopen/edit/frontend verification as the intended editor role."
+      ]
+    },
+    {
+      "id": 4,
+      "kind": "edge-case",
+      "prompt": "I put just iconpack.renderTypes.webfont.solid.css in the Font Awesome configFile YAML, and now SVG and brand icons have vanished. Repair the override.",
+      "expected_output": "Explains shallow first-level iconpack merge and restores a full renderTypes branch or removes unnecessary overrides.",
+      "files": [],
+      "expectations": [
+        "Identifies that renderTypes is wholly replaced and restores inherited default/styles/renderers from the installed version.",
+        "Does not claim the registry recursively merges nested YAML.",
+        "Keeps the pack key unchanged and verifies all required styles and renderer asset paths."
+      ]
+    },
+    {
+      "id": 5,
+      "kind": "regression",
+      "prompt": "Our sprite is 404 after deployment and the webserver log says permission denied. Repair publication and access without making all vendor files writable.",
+      "expected_output": "Diagnoses observed URL, installed file/symbol, asset symlinks and narrow filesystem access, using supported regeneration.",
+      "files": [],
+      "expectations": [
+        "Inspects public/_assets and the provider's exact sprite source and symbol, without hard-coding a generated hash.",
+        "Uses composer dump-autoload or the target version's documented asset publication and cache flush.",
+        "Checks webserver readability and ancestor directory traversal, then applies narrow deployment ownership/permission fixes.",
+        "Inspects browser console/Network and application/webserver logs; avoids whole-tree deletion, chown or chmod 777."
+      ]
+    },
+    {
+      "id": 6,
+      "kind": "edge-case",
+      "prompt": "Upgrade the Font Awesome provider on an existing TYPO3 site with stored fa6 iconfigs and custom YAML. Preserve the old icons and give me a rollback plan.",
+      "expected_output": "Backups, constrained targeted update, review of replacements/aliases, persistence acceptance checks and scoped rollback.",
+      "files": [],
+      "expectations": [
+        "Backs up database, FAL/uploads, configuration, Composer manifest/lockfile and representative stored iconfigs before upgrades.",
+        "Checks selected provider version, old pack replacements and actual aliases rather than renaming stored keys blindly.",
+        "Previews targeted dependency changes, reviews lockfile changes, and deploys using composer install.",
+        "Retests editor save/reopen/frontend output; database restoration is conditional on explicit rollback scope."
+      ]
+    },
+    {
+      "id": 7,
+      "kind": "edge-case",
+      "prompt": "For TYPO3 14, put the icon setup into ext_tables.php and use the old FontawesomeIconProvider and CKEditor 4 externalPlugins syntax.",
+      "expected_output": "Explains version mismatches and delivers modern equivalents, with historical snippets labeled as legacy only.",
+      "files": [],
+      "expectations": [
+        "Uses Configuration/Icons.php, modern backend module configuration and SVG providers for the current version.",
+        "Uses the supplied CKEditor 5 importModules/plugin and correct Page TSconfig preset assignment.",
+        "Does not use removed APIs for TYPO3 14; legacy ext_tables.php guidance is clearly version-scoped.",
+        "Checks the existing TYPO3 14 module parent instead of copying the TYPO3 13 web parent unconditionally."
+      ]
+    },
+    {
+      "id": 8,
+      "kind": "near-miss",
+      "prompt": "Add a built-in TYPO3 Core action icon to an existing backend button. We do not use Iconpack and do not want an additional dependency.",
+      "expected_output": "Uses existing Core icon facilities without installing Iconpack or its provider.",
+      "files": [],
+      "expectations": [
+        "Recognizes this as outside the Iconpack skill boundary and does not install any icon-pack package.",
+        "Respects the requested Core-only solution and preserves existing dependencies."
+      ]
+    }
+  ]
+}

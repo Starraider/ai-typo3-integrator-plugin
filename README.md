@@ -5,7 +5,7 @@ This collection of portable, reusable Skills complies with the [Agent Plugin 1.0
 ## Package contract
 
 - **Plugin:** `ai-typo3-integrator-plugin` (`plugin.json`, schema 1.0.0)
-- **Portable components:** 25 immediate-child [Agent Skills](https://agentskills.io/specification) in `skills/`
+- **Portable components:** 26 immediate-child [Agent Skills](https://agentskills.io/specification) in `skills/`
 - **MCP servers:** none
 - **License:** CC-BY-4.0; see [LICENSE](LICENSE)
 
@@ -31,6 +31,7 @@ This collection of portable, reusable Skills complies with the [Agent Plugin 1.0
 | [typo3-fluid-patterns](skills/typo3-fluid-patterns/README.md) | Fluid templates, content architecture, accessibility, and JS patterns |
 | [typo3-form-yaml](skills/typo3-form-yaml/README.md) | Versioned EXT:form YAML, editor setup, and form styling |
 | [typo3-frontend-registration](skills/typo3-frontend-registration/README.md) | Approval-gated frontend registration with CAPTCHA and felogin |
+| [typo3-iconpack](skills/typo3-iconpack/README.md) | Iconpack providers, backend/Fluid icons, assets, RTE insertion, and maintenance |
 | [typo3-language-menu](skills/typo3-language-menu/README.md) | Language switcher with browser detection and preference persistence |
 | [typo3-menu-dataprocessor](skills/typo3-menu-dataprocessor/README.md) | Navigation menus and language menus via data processors |
 | [typo3-playwright-ddev](skills/typo3-playwright-ddev/README.md) | Playwright and accessibility test setup in DDEV |
