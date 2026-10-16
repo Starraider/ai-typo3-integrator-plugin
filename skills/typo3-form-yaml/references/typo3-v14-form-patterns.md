@@ -3,6 +3,11 @@
 Use the TYPO3 Form manual overview as the canonical starting point, then open the narrower configuration pages as needed:
 
 - TYPO3 Form manual overview: [https://docs.typo3.org/c/typo3/cms-form/main/en-us/Index.html](https://docs.typo3.org/c/typo3/cms-form/main/en-us/Index.html)
+- Form Security, Honeypots, CSP, and bw_captcha: [form-security.md](form-security.md)
+- Styling with Bootstrap Package, Tailwind, and StyleX: [form-styling.md](form-styling.md)
+- Custom Form Finisher Emails, Layouts, and Image/SVG Embedding: [email-templates.md](email-templates.md)
+- Multi-Step Forms, Conditions, and Dynamic Fields: [multistep-conditional-forms.md](multistep-conditional-forms.md)
+- Form Translation and Localization across Site Languages: [form-localization.md](form-localization.md)
 
 ## Version Gate
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "TYPO3 Form YAML (v14)"
-  short_description: "EXT:form YAML-based forms in site packages"
-  default_prompt: "Use $typo3-form-yaml to create, configure, or style TYPO3 v14 EXT:form forms via versioned YAML files in a site package or extension."
+  short_description: "EXT:form YAML configuration, security, and styling in site packages"
+  default_prompt: "Use $typo3-form-yaml to create, configure, secure, or style TYPO3 v14 EXT:form forms via versioned YAML files in a site package or extension."
