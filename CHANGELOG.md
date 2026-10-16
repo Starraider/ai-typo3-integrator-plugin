@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/Starraider/ai-typo3-integrator-plugin/compare/v1.1.0...v1.2.0) (2026-10-16)
+
+
+### Features
+
+* Add Iconpack skill. ([1153633](https://github.com/Starraider/ai-typo3-integrator-plugin/commit/1153633afcaab32df9c0c0d22855ad91e98b0ab1))
+* Update form skill with security, captcha, styling and multi-step ([996b825](https://github.com/Starraider/ai-typo3-integrator-plugin/commit/996b8255ce785e381b713f1e4f6575c396724e4e))
+
 ## [1.1.0](https://github.com/Starraider/ai-typo3-integrator-plugin/compare/v1.0.0...v1.1.0) (2026-09-29)
 
 
